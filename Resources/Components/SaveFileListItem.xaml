@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GHVRQ_Save_Manager.Resources.Components.SaveFileListItem"
+             x:Name="SaveFileListItemComponent">
+
+    <ContentView.Content>
+        <HorizontalStackLayout Padding="10" Spacing="10">
+            <Label Text="{Binding Source={x:Reference SaveFileListItemComponent}, Path=Path}" FontAttributes="Bold" />
+            <Button Text="Load" Clicked="Load_Button_Clicked"/>
+        </HorizontalStackLayout>
+    </ContentView.Content>
+    
+</ContentView>

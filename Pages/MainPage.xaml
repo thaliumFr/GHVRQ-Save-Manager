@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:GHVRQ_Save_Manager"
+             xmlns:components="clr-namespace:GHVRQ_Save_Manager.Resources.Components"
+             x:Class="GHVRQ_Save_Manager.MainPage"
+             x:DataType="ContentPage">
+    <VerticalStackLayout x:Name="FilesList">
+        <components:SaveFileListItem Path="YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"  />
+        <Button Text="Test" Clicked="Button_Clicked" />
+    </VerticalStackLayout>
+</ContentPage>
