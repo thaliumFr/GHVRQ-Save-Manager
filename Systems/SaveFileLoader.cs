@@ -8,36 +8,39 @@ namespace GHVRQ_Save_Manager.Systems
 {
     internal static class SaveFileLoader
     {
-        public static string SaveDirectory = "/sdcard/Android/data/com.Incuvo.GreenHellVR/files/";
-        private static string[] SaveFolders = ["Story", "Survival", "SOA", "Challenge", "COOP_SOA", "COOP_Story", "COOP_Survival", "Settings"];
+        private static readonly string[] SaveFolders = ["Story", "Survival", "SOA", "Challenge", "COOP_SOA", "COOP_Story", "COOP_Survival", "Settings"];
 
         public static List<SaveFile> Files = [];
 
         public static void LoadSaveFiles()
         {
-            Files = [];
-            if (!File.Exists(SaveDirectory)) return;
+            string outputDirectory = Path.Combine(Tools.appdata, "GHVRSaveFiles");
 
-            Directory.GetFiles(SaveDirectory+"Story").ToList().ForEach(file =>
+            Files = [];
+            if (!File.Exists(outputDirectory)) return;
+
+            foreach (var Dir in SaveFolders)
             {
-                var fileInfo = new FileInfo(file);
-                var saveFile = new SaveFile
+                Directory.GetFiles(outputDirectory + Dir).ToList().ForEach(file =>
                 {
-                    FilePath = file,
-                    FileName = fileInfo.Name,
-                    AppVersion = "Unknown",
-                    FileSaveDate = fileInfo.LastWriteTime.ToString(),
-                    Type = SaveFile.SaveFileType.Story,
-                    Mode = SaveFile.SaveFileMode.ManualSave
-                };
-                Files.Add(saveFile);
-            });
+                    var fileInfo = new FileInfo(file);
+                    var saveFile = new SaveFile
+                    {
+                        FilePath = file,
+                        FileName = fileInfo.Name,
+                        AppVersion = "Unknown",
+                        FileSaveDate = fileInfo.LastWriteTime.ToString(),
+                        Type = SaveFile.SaveFileType.Story,
+                        Mode = SaveFile.SaveFileMode.ManualSave
+                    };
+                    Files.Add(saveFile);
+                });
+            }
         }
     
 
         public static void ExtractSaveFiles(out Result[] results) {
-            string file = "Resources.BackupGHVRSaveFiles.bat";
-            string outputDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GHVRSaveFiles");
+            string outputDirectory = Path.Combine(Tools.appdata, "GHVRSaveFiles");
 
             results = new Result[SaveFolders.Length];
 
@@ -56,13 +59,14 @@ namespace GHVRQ_Save_Manager.Systems
             int index = 0;
             foreach (var folder in SaveFolders)
             {
-                startInfo.Arguments = $"/C adb.exe pull /sdcard/Android/data/com.Incuvo.GreenHellVR/files/{folder}/ {outputDirectory}";
+                startInfo.Arguments = $"/C {Tools.adbExecutablePath} pull /sdcard/Android/data/com.Incuvo.GreenHellVR/files/{folder}/ {outputDirectory}";
                 process.StartInfo = startInfo;
                 process.Start();
 
                 process.WaitForExit();
                 var output = process.StandardOutput.ReadToEnd();
                 var error = process.StandardError.ReadToEnd();
+                process.Close();
 
                 results[index] = new Result
                 {
@@ -72,6 +76,12 @@ namespace GHVRQ_Save_Manager.Systems
                 };
                 index++;
             }
+        }
+
+        public static void ClearSaveFilesFolder()
+        {
+            string outputDirectory = Path.Combine(Tools.appdata, "GHVRSaveFiles");
+            Directory.Delete(outputDirectory, true);
         }
     }
 

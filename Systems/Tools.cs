@@ -8,6 +8,10 @@ namespace GHVRQ_Save_Manager.Systems
 {
     internal class Tools
     {
+        public static readonly string appdata = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GHVRQSaveManager");
+        public static readonly string adbPath = Path.Combine(appdata, "platform-tools");
+        public static readonly string adbExecutablePath = Path.Combine(adbPath, "adb.exe");
+
         public static string GetEmbeddedResource(string resourceName)
         {
             var assembly = Assembly.GetEntryAssembly();
@@ -22,26 +26,6 @@ namespace GHVRQ_Save_Manager.Systems
             return reader.ReadToEnd();
         }
 
-        public static void CheckForAdb()
-        {
-            string appdata = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GHVRQSaveManager");
-            if (!Path.Exists(appdata))
-            {
-                Directory.CreateDirectory(appdata);
-            }
-
-            string adbPath = Path.Combine(appdata, "platform-tools");
-
-            Debug.WriteLine(adbPath);
-            if (!Directory.Exists(adbPath))
-            {
-                Debug.WriteLine($"ADB not found. Installing ...");
-                System.IO.Compression.ZipFile.ExtractToDirectory(Assembly.GetEntryAssembly().GetManifestResourceStream($"GHVRQ_Save_Manager.Resources.platform-tools-latest-windows.zip"), appdata);
-            }
-            else
-            {
-                Debug.WriteLine("ADB found.");
-            }
-        }
+        
     }
 }

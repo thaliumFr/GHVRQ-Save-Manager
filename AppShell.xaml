@@ -6,19 +6,7 @@
     xmlns:local="clr-namespace:GHVRQ_Save_Manager"
     Title="GHVRQ_Save_Manager">
 
-    <TabBar>
-        <Tab Title="Main">
-            <ShellContent
-            Title="Home"
-            ContentTemplate="{DataTemplate local:MainPage}"
-            Route="MainPage" />
-        </Tab>
-        <Tab Title="Player Stats">
-            <ShellContent
-            Title="Player Stats"
-            ContentTemplate="{DataTemplate local:PlayerStatPage}"
-            Route="PlayerStatPage" />
-        </Tab>
-    </TabBar>
+    <ShellContent ContentTemplate="{DataTemplate local:MainPage}"
+              Route="MainPage" />
 
 </Shell>

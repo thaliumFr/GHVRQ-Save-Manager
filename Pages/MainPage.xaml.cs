@@ -1,32 +1,66 @@
 ﻿using GHVRQ_Save_Manager.Resources.Components;
 using GHVRQ_Save_Manager.Systems;
+using System.Diagnostics;
+using UraniumUI.Pages;
+using static ADB;
 
 namespace GHVRQ_Save_Manager
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage : UraniumContentPage
     {
+        public static event EventHandler<bool> OnQuestDetected;
+        public static bool IsQuestDetected;
 
         public MainPage()
         {
             InitializeComponent();
 
-            SaveFileLoader.LoadSaveFiles();
-            foreach (var file in SaveFileLoader.Files)
+            ADB.OnDevicesChanged += ADB_OnDevicesChanged;
+            OnQuestDetected += (_, status) =>
             {
-                FilesList.Add(new SaveFileListItem() { Path = file.FilePath });
-            }
+                IsQuestDetected = status;
+
+                if (IsQuestDetected)
+                {
+                    SaveFileLoader.ExtractSaveFiles(out Result[] results);
+                }
+                else
+                {
+                    SaveFileLoader.ClearSaveFilesFolder();
+                }
+            };
+            App.recurringTask.StartAsync(new());
+
+            SaveFileLoader.LoadSaveFiles();
+            //foreach (var file in SaveFileLoader.Files)
+            //{
+            //    FilesList.Add(new SaveFileListItem() { Path = file.FilePath });
+            //}
+
+            OutputLabel.Text = "Checking for devices...";
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private void ADB_OnDevicesChanged(object? sender, ADB.DeviceData[] devices)
         {
-            SaveFileLoader.ExtractSaveFiles(out Result[] results);
-
-            string errors = results.Aggregate("", (acc, result) => acc + result.Error);
-
-            if (!string.IsNullOrEmpty(errors))
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                DisplayAlert("Error", "An error occurred while extracting save files.", "OK");
-            }
+                
+                if (devices != null && devices.Length > 0)
+                {
+                    if (devices[0].Model.Contains("Quest"))
+                    {
+                        OnQuestDetected?.Invoke(null, true);
+                    }
+                    OutputLabel.Text = $"Device ID: {devices[0].ID}\nModel: {devices[0].Model}";
+                }
+                else
+                {
+                    OnQuestDetected?.Invoke(null, false);
+                    OutputLabel.Text = "No device connected.";
+                }
+
+
+            });
         }
     }
 }
