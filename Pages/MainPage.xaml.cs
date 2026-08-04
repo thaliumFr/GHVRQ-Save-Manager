@@ -16,12 +16,24 @@ namespace GHVRQ_Save_Manager
             InitializeComponent();
 
             ADB.OnDevicesChanged += ADB_OnDevicesChanged;
+
+            SaveFileLoader.OnSaveFileLoaded+= (_, files) => {
+                Debug.WriteLine($"Save file loaded: {files.Count}");
+                SaveFileDropdown.ItemsSource = files.Select(file => $"{file.FileName} ({file.Type})").ToList();
+            };
+
+            SaveFileLoader.OnSaveFileExtracted += (_, results) =>
+            {
+                SaveFileLoader.LoadSaveFiles();
+            };
+
             OnQuestDetected += (_, status) =>
             {
                 IsQuestDetected = status;
 
                 if (IsQuestDetected)
                 {
+                    Debug.WriteLine("Quest Detected, extracting save files");
                     SaveFileLoader.ExtractSaveFiles(out Result[] results);
                 }
                 else
@@ -29,13 +41,9 @@ namespace GHVRQ_Save_Manager
                     SaveFileLoader.ClearSaveFilesFolder();
                 }
             };
+
             App.recurringTask.StartAsync(new());
 
-            SaveFileLoader.LoadSaveFiles();
-            //foreach (var file in SaveFileLoader.Files)
-            //{
-            //    FilesList.Add(new SaveFileListItem() { Path = file.FilePath });
-            //}
 
             OutputLabel.Text = "Checking for devices...";
         }
@@ -44,7 +52,6 @@ namespace GHVRQ_Save_Manager
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                
                 if (devices != null && devices.Length > 0)
                 {
                     if (devices[0].Model.Contains("Quest"))
@@ -58,9 +65,13 @@ namespace GHVRQ_Save_Manager
                     OnQuestDetected?.Invoke(null, false);
                     OutputLabel.Text = "No device connected.";
                 }
-
-
             });
+        }
+
+        private void SaveFileDropdown_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Debug.WriteLine($"Selected save file: {SaveFileDropdown.SelectedItem}");
+            TabbedView.IsVisible = !String.IsNullOrEmpty(SaveFileDropdown?.SelectedItem?.ToString());
         }
     }
 }

@@ -17,8 +17,60 @@
         HorizontalOptions="Fill">
 
         <FlexLayout JustifyContent="SpaceBetween" Direction="Row" FlowDirection="RightToLeft" HorizontalOptions="Fill">
-            <uranium:Dropdown x:Name="SaveFileDropdoown" Placeholder="Choose" />
-            <Label x:Name="OutputLabel" HorizontalTextAlignment="End" />
+            <uranium:Dropdown x:Name="SaveFileDropdown" Placeholder="Choose" HorizontalTextAlignment="End" PropertyChanged="SaveFileDropdown_PropertyChanged"/>
+            <Label x:Name="OutputLabel" HorizontalTextAlignment="End"  />
         </FlexLayout>
+
+        <material:TabView x:Name="TabbedView" IsVisible="False">
+            <material:TabItem Title="Player Status">
+                <material:TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <Label Text="Player Status Tab" />
+                    </DataTemplate>
+                </material:TabItem.ContentTemplate>
+            </material:TabItem>
+
+
+            <material:TabItem Title="Player Injury">
+                <material:TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <Label Text="Injury Tab" />
+                    </DataTemplate>
+                </material:TabItem.ContentTemplate>
+            </material:TabItem>
+
+            <material:TabItem Title="World">
+                <material:TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <Label Text="World Tab" />
+                    </DataTemplate>
+                </material:TabItem.ContentTemplate>
+            </material:TabItem>
+
+            <material:TabItem Title="Items">
+                <material:TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <Label Text="items Tab" />
+                    </DataTemplate>
+                </material:TabItem.ContentTemplate>
+            </material:TabItem>
+            <material:TabItem Title="Notebook">
+                <material:TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <Label Text="Notebook Tab" />
+                    </DataTemplate>
+                </material:TabItem.ContentTemplate>
+            </material:TabItem>
+            <material:TabItem Title="Map">
+                <material:TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <Label Text="map Tab" />
+                    </DataTemplate>
+                </material:TabItem.ContentTemplate>
+            </material:TabItem>
+        </material:TabView>
+
+        
+
     </VerticalStackLayout>
 </uranium:UraniumContentPage>

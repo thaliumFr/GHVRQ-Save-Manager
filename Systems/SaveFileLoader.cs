@@ -8,20 +8,29 @@ namespace GHVRQ_Save_Manager.Systems
 {
     internal static class SaveFileLoader
     {
-        private static readonly string[] SaveFolders = ["Story", "Survival", "SOA", "Challenge", "COOP_SOA", "COOP_Story", "COOP_Survival", "Settings"];
+        private static readonly string[] SaveFolders = ["Story", "Survival", "SOA", "Challenge", "COOP_Story", "COOP_Survival", "COOP_SOA", "Settings"];
 
         public static List<SaveFile> Files = [];
 
+        public static event EventHandler<Result[]> OnSaveFileExtracted;
+        public static event EventHandler<List<SaveFile>> OnSaveFileLoaded;
+
         public static void LoadSaveFiles()
         {
-            string outputDirectory = Path.Combine(Tools.appdata, "GHVRSaveFiles");
+            string outputDirectory = Tools.appdata;
 
             Files = [];
-            if (!File.Exists(outputDirectory)) return;
+            if (!Directory.Exists(outputDirectory))
+            {
+                Debug.WriteLine($"{outputDirectory} isn't a thing");
+                return;
+            }
 
             foreach (var Dir in SaveFolders)
             {
-                Directory.GetFiles(outputDirectory + Dir).ToList().ForEach(file =>
+                string FolderPath = Path.Combine(outputDirectory, "GHVRSaveFiles", Dir );
+                Debug.WriteLine(FolderPath);
+                Directory.GetFiles(FolderPath).ToList().ForEach(file =>
                 {
                     var fileInfo = new FileInfo(file);
                     var saveFile = new SaveFile
@@ -30,12 +39,15 @@ namespace GHVRQ_Save_Manager.Systems
                         FileName = fileInfo.Name,
                         AppVersion = "Unknown",
                         FileSaveDate = fileInfo.LastWriteTime.ToString(),
-                        Type = SaveFile.SaveFileType.Story,
+                        Type = (SaveFile.SaveFileType)Enum.Parse(typeof(SaveFile.SaveFileType), Dir),
                         Mode = SaveFile.SaveFileMode.ManualSave
                     };
                     Files.Add(saveFile);
                 });
             }
+
+            OnSaveFileLoaded?.Invoke(null, Files);
+            Debug.WriteLine(Files.Count);
         }
     
 
@@ -76,6 +88,8 @@ namespace GHVRQ_Save_Manager.Systems
                 };
                 index++;
             }
+
+            OnSaveFileExtracted?.Invoke(null, results);
         }
 
         public static void ClearSaveFilesFolder()
@@ -114,7 +128,12 @@ namespace GHVRQ_Save_Manager.Systems
         {
             Story,
             Survival,
-            Challenge
+            SOA,
+            Challenge,
+            COOP_Story,
+            COOP_Survival,
+            COOP_SOA,
+            Settings,
         }
         
     }
