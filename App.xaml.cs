@@ -1,4 +1,5 @@
 ﻿using GHVRQ_Save_Manager.Systems;
+using GHVRQ_Save_Manager.XML;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -26,6 +27,7 @@ namespace GHVRQ_Save_Manager
             };
 
             win.Destroying += (s, e) => {
+                XMLReaderSystem.CurrentDoc = null;
                 SaveFileLoader.ClearSaveFilesFolder();
             };
 

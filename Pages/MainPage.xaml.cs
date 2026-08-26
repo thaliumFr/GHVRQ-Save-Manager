@@ -16,7 +16,7 @@ namespace GHVRQ_Save_Manager
 
         public static Dictionary<TextField, string> TextFieldsList = [];
 
-        public SaveFileBindableData? SaveFile;
+        private string SaveFilePath = "";
 
         public MainPage()
         {
@@ -77,6 +77,8 @@ namespace GHVRQ_Save_Manager
                 {
                     OnQuestDetected?.Invoke(null, false);
                     OutputLabel.Text = "No device connected.";
+                    SaveFileDropdown.IsEnabled = false;
+                    SaveFileDropdown.ItemsSource = new List<string>();
                 }
             });
         }
@@ -86,9 +88,17 @@ namespace GHVRQ_Save_Manager
             Debug.WriteLine($"Selected save file: {SaveFileDropdown.SelectedItem}");
             TabbedView.IsVisible = !String.IsNullOrEmpty(SaveFileDropdown?.SelectedItem?.ToString());
 
+
+            if (XMLReaderSystem.CurrentDoc != null)
+            {
+                XMLReaderSystem.CurrentDoc.Save(SaveFilePath);
+                Debug.WriteLine("XML Document saved");
+            }
+
             if (TabbedView.IsVisible)
             {
                 SaveFileLoader.NameToPath(SaveFileDropdown.SelectedItem.ToString(), out string fileName, out string filePath);
+                SaveFilePath = filePath;
                 XMLReaderSystem.Load(filePath);
             }
         }
@@ -96,12 +106,20 @@ namespace GHVRQ_Save_Manager
         public void AddFieldToList(object sender, EventArgs e)
         {
             TextField textField = (TextField)sender;
-            TextFieldsList.Add(textField, textField.Text);
-            textField.Text = "";
+            if(!TextFieldsList.ContainsKey(textField))
+            {
+                TextFieldsList.Add(textField, textField.Text);
+                textField.Text = "";
+            }
         }
 
         private void SaveButton_Clicked(object sender, EventArgs e)
         {
+            if (XMLReaderSystem.CurrentDoc != null)
+            {
+                XMLReaderSystem.CurrentDoc.Save(SaveFilePath);
+                Debug.WriteLine("XML Document saved");
+            }
             SaveFileLoader.PushSaveFiles(out var results);
         }
     }

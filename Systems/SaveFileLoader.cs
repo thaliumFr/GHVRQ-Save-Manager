@@ -8,7 +8,7 @@ namespace GHVRQ_Save_Manager.Systems
 {
     internal static class SaveFileLoader
     {
-        private static readonly string[] SaveFolders = ["Story", "Survival", "SOA", "Challenge", "COOP_Story", "COOP_Survival", "COOP_SOA", "Settings"];
+        private static readonly string[] SaveFolders = ["Story", "Survival", "SOA", "Challenge", "COOP_Story", "COOP_Survival", "COOP_SOA"];
 
         public static List<SaveFile> Files = [];
 
@@ -97,8 +97,9 @@ namespace GHVRQ_Save_Manager.Systems
         public static void PushSaveFiles(out Result[] results)
         {
             string outputDirectory = Path.Combine(Tools.appdata, "GHVRSaveFiles");
+            Debug.WriteLine("Attempting saving files to device");
 
-            results = new Result[SaveFolders.Length];
+            results = new Result[SaveFolders.Length*3];
 
             Process process = new();
             ProcessStartInfo startInfo = new()
@@ -115,7 +116,30 @@ namespace GHVRQ_Save_Manager.Systems
             int index = 0;
             foreach (var folder in SaveFolders)
             {
-                startInfo.Arguments = $"/C {Tools.adbExecutablePath} push {outputDirectory} /sdcard/Android/data/com.Incuvo.GreenHellVR/files/{folder}/";
+                Debug.WriteLine(folder);
+                /*
+                // DELETE FOLDER
+                ADB.ExecuteAdbCommand($"shell rm -r /sdcard/Android/data/com.Incuvo.GreenHellVR/files/{folder}", out string DeleteOutput, out string DeleteError);
+                results[index] = new Result
+                {
+                    Folder = folder,
+                    Output = DeleteOutput,
+                    Error = DeleteError
+                };
+                index++;*/
+
+                //CREATE FOLDER
+                ADB.ExecuteAdbCommand($"shell mkdir /sdcard/Android/data/com.Incuvo.GreenHellVR/files/{folder}", out string CreateOutput, out string CreateError);
+                results[index] = new Result
+                {
+                    Folder = folder,
+                    Output = CreateOutput,
+                    Error = CreateError
+                };
+                index++;
+
+                // PUSH
+                startInfo.Arguments = $"/C {Tools.adbExecutablePath} push {outputDirectory}/{folder} /sdcard/Android/data/com.Incuvo.GreenHellVR/files/";
                 process.StartInfo = startInfo;
                 process.Start();
 
@@ -124,6 +148,17 @@ namespace GHVRQ_Save_Manager.Systems
                 var error = process.StandardError.ReadToEnd();
                 process.Close();
 
+                if(error.Contains("error"))
+                {
+                    
+                }
+                else
+                {
+                    // Correct ADB's behaviour to put everything as Errors
+                    output = error;
+                    error = "";
+                }
+
                 results[index] = new Result
                 {
                     Folder = folder,
@@ -131,6 +166,17 @@ namespace GHVRQ_Save_Manager.Systems
                     Error = error
                 };
                 index++;
+            }
+
+            var errors = results.Where((result) => !string.IsNullOrEmpty(result.Error));
+            if (errors.Count() > 0)
+            {
+                Debug.WriteLine("Error(s) occurred while pushing save files to device.");
+                Debug.WriteLine(string.Join(Environment.NewLine, errors.Select(e => $"Folder: {e.Folder}, Error: {e.Error}")));
+            }
+            else
+            {
+                Debug.WriteLine("Save files pushed to device successfully.");
             }
 
             OnSaveFilesPushed?.Invoke(null, EventArgs.Empty);

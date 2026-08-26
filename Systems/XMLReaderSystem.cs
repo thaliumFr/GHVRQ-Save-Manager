@@ -15,6 +15,8 @@ namespace GHVRQ_Save_Manager.XML
 
         public static ref XDocument? Load(string xmlFilePath)
         {
+            if (String.IsNullOrEmpty(xmlFilePath) || !File.Exists(xmlFilePath)) return ref CurrentDoc;
+
             CurrentDoc = XDocument.Load(xmlFilePath);
 
             FieldLinks.Clear();

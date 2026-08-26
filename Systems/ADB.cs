@@ -84,8 +84,8 @@ internal class ADB
             RedirectStandardError = true,
             RedirectStandardInput = true,
             CreateNoWindow = true,
-            FileName = Tools.adbExecutablePath,
-            Arguments = arguments
+            FileName = "cmd.exe",
+            Arguments = $"/C {Tools.adbExecutablePath} {arguments}"
         };
         process.StartInfo = startInfo;
         process.Start();
