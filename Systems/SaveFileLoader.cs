@@ -12,7 +12,8 @@ namespace GHVRQ_Save_Manager.Systems
 
         public static List<SaveFile> Files = [];
 
-        public static event EventHandler<Result[]> OnSaveFileExtracted;
+        public static event EventHandler<Result[]> OnSaveFilesExtracted;
+        public static event EventHandler OnSaveFilesPushed;
         public static event EventHandler<List<SaveFile>> OnSaveFileLoaded;
 
         public static void LoadSaveFiles()
@@ -30,7 +31,8 @@ namespace GHVRQ_Save_Manager.Systems
             {
                 string FolderPath = Path.Combine(outputDirectory, "GHVRSaveFiles", Dir );
                 Debug.WriteLine(FolderPath);
-                Directory.GetFiles(FolderPath).ToList().ForEach(file =>
+                if (!Directory.Exists(FolderPath)) continue;
+                Directory.GetFiles(FolderPath)?.ToList()?.ForEach(file =>
                 {
                     var fileInfo = new FileInfo(file);
                     var saveFile = new SaveFile
@@ -89,13 +91,68 @@ namespace GHVRQ_Save_Manager.Systems
                 index++;
             }
 
-            OnSaveFileExtracted?.Invoke(null, results);
+            OnSaveFilesExtracted?.Invoke(null, results);
+        }
+
+        public static void PushSaveFiles(out Result[] results)
+        {
+            string outputDirectory = Path.Combine(Tools.appdata, "GHVRSaveFiles");
+
+            results = new Result[SaveFolders.Length];
+
+            Process process = new();
+            ProcessStartInfo startInfo = new()
+            {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                RedirectStandardInput = true,
+                CreateNoWindow = true,
+                FileName = "cmd.exe",
+            };
+
+            int index = 0;
+            foreach (var folder in SaveFolders)
+            {
+                startInfo.Arguments = $"/C {Tools.adbExecutablePath} push {outputDirectory} /sdcard/Android/data/com.Incuvo.GreenHellVR/files/{folder}/";
+                process.StartInfo = startInfo;
+                process.Start();
+
+                process.WaitForExit();
+                var output = process.StandardOutput.ReadToEnd();
+                var error = process.StandardError.ReadToEnd();
+                process.Close();
+
+                results[index] = new Result
+                {
+                    Folder = folder,
+                    Output = output,
+                    Error = error
+                };
+                index++;
+            }
+
+            OnSaveFilesPushed?.Invoke(null, EventArgs.Empty);
         }
 
         public static void ClearSaveFilesFolder()
         {
             string outputDirectory = Path.Combine(Tools.appdata, "GHVRSaveFiles");
-            Directory.Delete(outputDirectory, true);
+            if (Directory.Exists(outputDirectory)) Directory.Delete(outputDirectory, true);
+        }
+
+        public static string NameToPath(string name, out string fileName, out string filePath)
+        {
+            var parts = name.Split(" ");
+            string category = parts[1].Replace("(", " ").Replace(")", " ").Trim();
+            Debug.WriteLine($"Searching for file: {parts[0]} in category: {category}");
+            SaveFile saveFile = Files.Find(file => file.FileName == parts[0] && file.Type.ToString() == category);
+
+
+            fileName = parts[0];
+            filePath = saveFile.FilePath;
+            return filePath;
         }
     }
 

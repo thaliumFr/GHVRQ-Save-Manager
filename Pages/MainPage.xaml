@@ -17,7 +17,10 @@
         HorizontalOptions="Fill">
 
         <FlexLayout JustifyContent="SpaceBetween" Direction="Row" FlowDirection="RightToLeft" HorizontalOptions="Fill">
-            <uranium:Dropdown x:Name="SaveFileDropdown" Placeholder="Choose" HorizontalTextAlignment="End" PropertyChanged="SaveFileDropdown_PropertyChanged"/>
+            <HorizontalStackLayout>
+                <uranium:Dropdown x:Name="SaveFileDropdown" Placeholder="Choose" HorizontalTextAlignment="End" PropertyChanged="SaveFileDropdown_PropertyChanged"/>
+                <Button x:Name="SaveButton" StyleClass="FilledTonalButton" Text="Save" BackgroundColor="{StaticResource Magenta}" Clicked="SaveButton_Clicked"></Button>
+            </HorizontalStackLayout>
             <Label x:Name="OutputLabel" HorizontalTextAlignment="End"  />
         </FlexLayout>
 
@@ -25,7 +28,12 @@
             <material:TabItem Title="Player Status">
                 <material:TabItem.ContentTemplate>
                     <DataTemplate>
-                        <Label Text="Player Status Tab" />
+                        <VerticalStackLayout>
+                            <Label Text="Position" />
+                            <material:TextField Title="X" Text="playerStatus.PLAYER_POSITION.x" Loaded="AddFieldToList"/>
+                            <material:TextField Title="Y" Text="playerStatus.PLAYER_POSITION.y" Loaded="AddFieldToList"/>
+                            <material:TextField Title="Z" Text="playerStatus.PLAYER_POSITION.z" Loaded="AddFieldToList"/>
+                        </VerticalStackLayout>
                     </DataTemplate>
                 </material:TabItem.ContentTemplate>
             </material:TabItem>
