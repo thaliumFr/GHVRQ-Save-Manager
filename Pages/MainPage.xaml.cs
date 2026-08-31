@@ -46,7 +46,7 @@ namespace GHVRQ_Save_Manager
                         new ItemCardComponent()
                         {
                             ItemID = obj.type,
-                            TheItemIdFR = obj.Object_Id
+                            ItemUUID = obj.Object_Id
                         }
                     );
                 }

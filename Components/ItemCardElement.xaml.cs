@@ -1,11 +1,15 @@
+using System.Diagnostics;
+using System.Reflection.Metadata;
+using System.Windows.Input;
+
 namespace GHVRQ_Save_Manager.Components;
 
 public partial class ItemCardComponent : ContentView
 {
 	public ItemCardComponent()
 	{
-		InitializeComponent();
-	}
+        InitializeComponent();
+    }
 
     public static readonly BindableProperty ItemIDProperty = BindableProperty.Create(
         nameof(ItemID),
@@ -19,15 +23,23 @@ public partial class ItemCardComponent : ContentView
         set => SetValue(ItemIDProperty, value);
     }
 
-    public static readonly BindableProperty ItemUIDProperty = BindableProperty.Create(
-        nameof(TheItemIdFR),
+    public static readonly BindableProperty ItemUUIDProperty = BindableProperty.Create(
+        nameof(ItemUUID),
         typeof(string),
         typeof(ItemCardComponent),
         string.Empty);
 
-    public string TheItemIdFR
+    public string ItemUUID
     {
-        get => (string)GetValue(ItemUIDProperty);
-        set => SetValue(ItemUIDProperty, value);
+        get => (string)GetValue(ItemUUIDProperty);
+        set => SetValue(ItemUUIDProperty, value);
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        Debug.WriteLine("clicked");
+        Button button = (Button)sender;
+        Debug.WriteLine($"Adding item to backpack: {button.CommandParameter}");
+        
     }
 }
