@@ -23,7 +23,7 @@
             <Label x:Name="OutputLabel" HorizontalTextAlignment="End"  />
         </FlexLayout>
 
-        <material:TabView x:Name="TabbedView" IsVisible="False" VerticalOptions="Center" MaximumHeightRequest="900">
+        <material:TabView x:Name="TabbedView" IsVisible="False" VerticalOptions="Fill">
             <material:TabItem Title="Player Status" >
                 <ScrollView Padding="50" Orientation="Vertical" VerticalOptions="Fill">
                     <VerticalStackLayout VerticalOptions="Fill">
@@ -89,15 +89,14 @@
                 <Label Text="World Tab" />
             </material:TabItem>
 
-            <material:TabItem x:Name="ItemsTab" Title="Items">
-                <VerticalStackLayout>
+            <material:TabItem x:Name="ItemsTab" Title="Items" >
+                <VerticalStackLayout VerticalOptions="Fill" >
                     <Label Text="items Tab"  x:Name="ItemsLabel"/>
                     <SearchBar Placeholder="Search" x:Name="ItemSearchBar" TextChanged="ItemSearchBar_TextChanged" />
 
-                    <ScrollView Orientation="Vertical" VerticalOptions="Fill">
+                    <ScrollView Orientation="Vertical" VerticalOptions="Fill" VerticalScrollBarVisibility="Always" MaximumHeightRequest="700">
                         <VerticalStackLayout x:Name="ItemsFlexLayoutList" VerticalOptions="Fill" HorizontalOptions="Fill" Spacing="5">
                             <!-- Items will be added here dynamically -->
-                            <components:ItemCardComponent ItemID="NONE" TheItemIdFR="314159265" />
                         </VerticalStackLayout>
                     </ScrollView>
                 </VerticalStackLayout>

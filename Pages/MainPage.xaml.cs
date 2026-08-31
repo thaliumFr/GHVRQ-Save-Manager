@@ -1,4 +1,5 @@
 ﻿using GHVRQ_Save_Manager.Components;
+using GHVRQ_Save_Manager.Data;
 using GHVRQ_Save_Manager.Systems;
 using GHVRQ_Save_Manager.XML;
 using System.Diagnostics;
@@ -20,7 +21,6 @@ namespace GHVRQ_Save_Manager
         {
             TextFieldsList = [];
             InitializeComponent();
-            ItemsFlexLayoutList.Add(new ItemCardComponent() { ItemID = EItemID.BAMBOO_HALFWALL, TheItemIdFR = "054343" });
 
             ADB.OnDevicesChanged += ADB_OnDevicesChanged;
 
@@ -32,6 +32,24 @@ namespace GHVRQ_Save_Manager
             SaveFileLoader.OnSaveFilesExtracted += (_, results) =>
             {
                 SaveFileLoader.LoadSaveFiles();
+            };
+
+            XMLReaderSystem.OnXMLDocumentLoaded += (_, _) =>
+            {
+                Debug.WriteLine("XML Document loaded");
+                List<GHVRObject> objects = XMLReaderSystem.GetAllGHVRObjects();
+
+                ItemsFlexLayoutList.Children.Clear();
+                foreach (GHVRObject obj in objects)
+                {
+                    ItemsFlexLayoutList.Children.Add(
+                        new ItemCardComponent()
+                        {
+                            ItemID = obj.type,
+                            TheItemIdFR = obj.Object_Id
+                        }
+                    );
+                }
             };
 
 

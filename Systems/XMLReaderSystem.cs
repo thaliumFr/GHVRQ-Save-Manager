@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GHVRQ_Save_Manager.Data;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -10,6 +11,8 @@ namespace GHVRQ_Save_Manager.XML
     public static class XMLReaderSystem
     {
         public static XDocument? CurrentDoc;
+
+        public static event EventHandler? OnXMLDocumentLoaded;
 
         public static Dictionary<TextField, XElement> FieldLinks = [];
 
@@ -25,6 +28,7 @@ namespace GHVRQ_Save_Manager.XML
                 AddElementLink(textField, path);
             }
 
+            OnXMLDocumentLoaded?.Invoke(null, EventArgs.Empty);
             return ref CurrentDoc;
         }
 
@@ -38,6 +42,7 @@ namespace GHVRQ_Save_Manager.XML
                 AddElementLink(textField, path);
             }
 
+            OnXMLDocumentLoaded?.Invoke(null, EventArgs.Empty);
             return ref CurrentDoc;
         }
 
@@ -93,6 +98,38 @@ namespace GHVRQ_Save_Manager.XML
             FieldLinks.Add(textField, node);
 
             return node;
+        }
+
+        public static List<GHVRObject> GetAllGHVRObjects()
+        {
+            List<GHVRObject> objects = [];
+            XElement? itemsElement = GetCategoryElement(Category.Items)?.Element("OBJECTS_LIST");
+            if (itemsElement == null) return objects;
+            foreach (XElement itemElement in itemsElement.Elements("OBJECT"))
+            {
+                XElement? pos = itemElement.Element("POSITION");
+                XElement? rot = itemElement.Element("ROTATION");
+
+                GHVRObject obj = new()
+                {
+                    Object_Id = itemElement.Element("OBJECT_ID")?.Value ?? "",
+                    type = Enum.TryParse(itemElement.Element("TYPE")?.Value, out EItemID itemType) ? itemType : EItemID.NONE,
+                    position = new System.Numerics.Vector3(
+                        float.Parse(pos?.Attribute("x")?.Value ?? "0"),
+                        float.Parse(pos?.Attribute("y")?.Value ?? "0"),
+                        float.Parse(pos?.Attribute("z")?.Value ?? "0")
+                    ),
+                    rotation = new Data.math.Rotation
+                    {
+                        x = float.Parse(rot?.Attribute("x")?.Value ?? "0"),
+                        y = float.Parse(rot?.Attribute("y")?.Value ?? "0"),
+                        z = float.Parse(rot?.Attribute("z")?.Value ?? "0"),
+                        w = float.Parse(rot?.Attribute("w")?.Value ?? "1")
+                    }
+                };
+                objects.Add(obj);
+            }
+            return objects;
         }
 
         public enum Category
