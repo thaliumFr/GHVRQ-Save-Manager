@@ -4,11 +4,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
              xmlns:local="clr-namespace:GHVRQ_Save_Manager"
-             xmlns:components="clr-namespace:GHVRQ_Save_Manager.Resources.Components"
+             xmlns:components="clr-namespace:GHVRQ_Save_Manager.Components"
              xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-             x:Class="GHVRQ_Save_Manager.MainPage"
-             x:DataType="ContentPage">
+             x:Class="GHVRQ_Save_Manager.MainPage">
     
     <VerticalStackLayout
         Spacing="25"
@@ -26,96 +25,88 @@
 
         <material:TabView x:Name="TabbedView" IsVisible="False" VerticalOptions="Center" MaximumHeightRequest="900">
             <material:TabItem Title="Player Status" >
-                <material:TabItem.ContentTemplate>
-                    <DataTemplate>
-                        <ScrollView Padding="50" Orientation="Vertical" VerticalOptions="Fill">
-                            <VerticalStackLayout VerticalOptions="Fill">
-                                <VerticalStackLayout>
-                                    <Label Text="Position" Margin="0, 15, 0, 5"/>
-                                    <HorizontalStackLayout>
-                                        <material:TextField Title="X" Text="playerStatus.PLAYER_POSITION.x" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="Y" Text="playerStatus.PLAYER_POSITION.y" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="Z" Text="playerStatus.PLAYER_POSITION.z" Loaded="AddFieldToList"/>
-                                    </HorizontalStackLayout>
+                <ScrollView Padding="50" Orientation="Vertical" VerticalOptions="Fill">
+                    <VerticalStackLayout VerticalOptions="Fill">
+                        <VerticalStackLayout>
+                            <Label Text="Position" Margin="0, 15, 0, 5"/>
+                            <HorizontalStackLayout>
+                                <material:TextField Title="X" Text="playerStatus.PLAYER_POSITION.x" Loaded="AddFieldToList"/>
+                                <material:TextField Title="Y" Text="playerStatus.PLAYER_POSITION.y" Loaded="AddFieldToList"/>
+                                <material:TextField Title="Z" Text="playerStatus.PLAYER_POSITION.z" Loaded="AddFieldToList"/>
+                            </HorizontalStackLayout>
 
-                                    <Label Text="Rotation" Margin="0, 15, 0, 5"/>
-                                    <HorizontalStackLayout>
-                                        <material:TextField Title="X" Text="playerStatus.PLAYER_ROTATION.x" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="Y" Text="playerStatus.PLAYER_ROTATION.y" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="Z" Text="playerStatus.PLAYER_ROTATION.z" Loaded="AddFieldToList"/>
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
+                            <Label Text="Rotation" Margin="0, 15, 0, 5"/>
+                            <HorizontalStackLayout>
+                                <material:TextField Title="X" Text="playerStatus.PLAYER_ROTATION.x" Loaded="AddFieldToList"/>
+                                <material:TextField Title="Y" Text="playerStatus.PLAYER_ROTATION.y" Loaded="AddFieldToList"/>
+                                <material:TextField Title="Z" Text="playerStatus.PLAYER_ROTATION.z" Loaded="AddFieldToList"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
 
-                                <uranium:ExpanderView Margin="0,25">
-                                    <uranium:ExpanderView.Header>
-                                        <Label Text="STATS" />
-                                    </uranium:ExpanderView.Header>
+                        <uranium:ExpanderView Margin="0,25">
+                            <uranium:ExpanderView.Header>
+                                <Label Text="STATS" />
+                            </uranium:ExpanderView.Header>
 
-                                    <VerticalStackLayout>
-                                        <material:TextField Title="isNutritionsUpdateOn" Text="playerStatus.STATS.isStatsUpdateOn" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="fats" Icon="icon_health_kolor_001.png" Text="playerStatus.STATS.health" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="carbohydrates" Icon="icon_zzz_trans_001.png" Text="playerStatus.STATS.stamina" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="proteins" Icon="icon_sleepy_trans_001.png" Text="playerStatus.STATS.energy" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="hydration" Icon="icon_sanity_trans_001.png" Text="playerStatus.STATS.sanity" Loaded="AddFieldToList"/>
-                                    </VerticalStackLayout>
-                                </uranium:ExpanderView>
-
-                                <uranium:ExpanderView Margin="0, 25">
-                                    <uranium:ExpanderView.Header>
-                                        <Label Text="MACROELEMENTS" />
-                                    </uranium:ExpanderView.Header>
-
-                                    <VerticalStackLayout>
-                                        <material:TextField Title="isNutritionsUpdateOn" Text="playerStatus.MACROELEMENTS.isNutritionsUpdateOn" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="fats" Icon="icon_fat_kolor_001.png" Text="playerStatus.MACROELEMENTS.fats" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="carbohydrates" Icon="icon_carbs_kolor_001.png" Text="playerStatus.MACROELEMENTS.carbohydrates" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="proteins" Icon="icon_health_kolor_001.png" Text="playerStatus.MACROELEMENTS.proteins" Loaded="AddFieldToList"/>
-                                        <material:TextField Title="hydration" Icon="icon_water_kolor_001.png" Text="playerStatus.MACROELEMENTS.hydration" Loaded="AddFieldToList"/>
-                                    </VerticalStackLayout>
-                                </uranium:ExpanderView>
+                            <VerticalStackLayout>
+                                <material:TextField Title="isNutritionsUpdateOn" Text="playerStatus.STATS.isStatsUpdateOn" Loaded="AddFieldToList"/>
+                                <material:TextField Title="fats" Icon="icon_health_kolor_001.png" Text="playerStatus.STATS.health" Loaded="AddFieldToList"/>
+                                <material:TextField Title="carbohydrates" Icon="icon_zzz_trans_001.png" Text="playerStatus.STATS.stamina" Loaded="AddFieldToList"/>
+                                <material:TextField Title="proteins" Icon="icon_sleepy_trans_001.png" Text="playerStatus.STATS.energy" Loaded="AddFieldToList"/>
+                                <material:TextField Title="hydration" Icon="icon_sanity_trans_001.png" Text="playerStatus.STATS.sanity" Loaded="AddFieldToList"/>
                             </VerticalStackLayout>
-                        </ScrollView>
-                    </DataTemplate>
-                </material:TabItem.ContentTemplate>
-            </material:TabItem>
+                        </uranium:ExpanderView>
 
+                        <uranium:ExpanderView Margin="0, 25">
+                            <uranium:ExpanderView.Header>
+                                <Label Text="MACROELEMENTS" />
+                            </uranium:ExpanderView.Header>
+
+                            <VerticalStackLayout>
+                                <material:TextField Title="isNutritionsUpdateOn" Text="playerStatus.MACROELEMENTS.isNutritionsUpdateOn" Loaded="AddFieldToList"/>
+                                <material:TextField Title="fats" Icon="icon_fat_kolor_001.png" Text="playerStatus.MACROELEMENTS.fats" Loaded="AddFieldToList"/>
+                                <material:TextField Title="carbohydrates" Icon="icon_carbs_kolor_001.png" Text="playerStatus.MACROELEMENTS.carbohydrates" Loaded="AddFieldToList"/>
+                                <material:TextField Title="proteins" Icon="icon_health_kolor_001.png" Text="playerStatus.MACROELEMENTS.proteins" Loaded="AddFieldToList"/>
+                                <material:TextField Title="hydration" Icon="icon_water_kolor_001.png" Text="playerStatus.MACROELEMENTS.hydration" Loaded="AddFieldToList"/>
+                            </VerticalStackLayout>
+                        </uranium:ExpanderView>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </material:TabItem>
 
             <material:TabItem Title="Player Injury">
                 <material:TabItem.ContentTemplate>
                     <DataTemplate>
-                        <Label Text="Injury Tab" />
+                        <VerticalStackLayout>
+                            <Label Text="Player Injury Tab" />
+                    
+                        </VerticalStackLayout>
                     </DataTemplate>
                 </material:TabItem.ContentTemplate>
             </material:TabItem>
 
             <material:TabItem Title="World">
-                <material:TabItem.ContentTemplate>
-                    <DataTemplate>
-                        <Label Text="World Tab" />
-                    </DataTemplate>
-                </material:TabItem.ContentTemplate>
+                <Label Text="World Tab" />
             </material:TabItem>
 
-            <material:TabItem Title="Items">
-                <material:TabItem.ContentTemplate>
-                    <DataTemplate>
-                        <Label Text="items Tab" />
-                    </DataTemplate>
-                </material:TabItem.ContentTemplate>
+            <material:TabItem x:Name="ItemsTab" Title="Items">
+                <VerticalStackLayout>
+                    <Label Text="items Tab"  x:Name="ItemsLabel"/>
+                    <SearchBar Placeholder="Search" x:Name="ItemSearchBar" TextChanged="ItemSearchBar_TextChanged" />
+
+                    <ScrollView Orientation="Vertical" VerticalOptions="Fill">
+                        <VerticalStackLayout x:Name="ItemsFlexLayoutList" VerticalOptions="Fill" HorizontalOptions="Fill" Spacing="5">
+                            <!-- Items will be added here dynamically -->
+                            <components:ItemCardComponent ItemID="NONE" TheItemIdFR="314159265" />
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </VerticalStackLayout>
             </material:TabItem>
             <material:TabItem Title="Notebook">
-                <material:TabItem.ContentTemplate>
-                    <DataTemplate>
-                        <Label Text="Notebook Tab" />
-                    </DataTemplate>
-                </material:TabItem.ContentTemplate>
+                <Label Text="Notebook Tab" />
             </material:TabItem>
             <material:TabItem Title="Map">
-                <material:TabItem.ContentTemplate>
-                    <DataTemplate>
-                        <Label Text="map Tab" />
-                    </DataTemplate>
-                </material:TabItem.ContentTemplate>
+                <Label Text="map Tab" />
             </material:TabItem>
         </material:TabView>
 

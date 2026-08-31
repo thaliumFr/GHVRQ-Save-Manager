@@ -1,11 +1,9 @@
-﻿using GHVRQ_Save_Manager.Data;
+﻿using GHVRQ_Save_Manager.Components;
 using GHVRQ_Save_Manager.Systems;
 using GHVRQ_Save_Manager.XML;
 using System.Diagnostics;
-using System.Xml.Linq;
 using UraniumUI.Material.Controls;
 using UraniumUI.Pages;
-using UraniumUI.ViewExtensions;
 
 namespace GHVRQ_Save_Manager
 {
@@ -22,6 +20,7 @@ namespace GHVRQ_Save_Manager
         {
             TextFieldsList = [];
             InitializeComponent();
+            ItemsFlexLayoutList.Add(new ItemCardComponent() { ItemID = EItemID.BAMBOO_HALFWALL, TheItemIdFR = "054343" });
 
             ADB.OnDevicesChanged += ADB_OnDevicesChanged;
 
@@ -34,6 +33,7 @@ namespace GHVRQ_Save_Manager
             {
                 SaveFileLoader.LoadSaveFiles();
             };
+
 
             OnQuestDetected += (_, status) =>
             {
@@ -121,6 +121,11 @@ namespace GHVRQ_Save_Manager
                 Debug.WriteLine("XML Document saved");
             }
             SaveFileLoader.PushSaveFiles(out var results);
+        }
+
+        private void ItemSearchBar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }
