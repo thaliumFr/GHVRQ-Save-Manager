@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:GHVRQ_Save_Manager"
              xmlns:components="clr-namespace:GHVRQ_Save_Manager.Components"
              xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
+             xmlns:models="clr-namespace:GHVRQ_Save_Manager.Data"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              x:Class="GHVRQ_Save_Manager.MainPage">
     
@@ -25,21 +26,21 @@
 
         <material:TabView x:Name="TabbedView" IsVisible="False" VerticalOptions="Fill">
             <material:TabItem Title="Player Status" >
-                <ScrollView Padding="50" Orientation="Vertical" VerticalOptions="Fill">
+                <ScrollView x:Name="PlayerStatusScrollView" Padding="50" Orientation="Vertical" VerticalOptions="Fill">
                     <VerticalStackLayout VerticalOptions="Fill">
                         <VerticalStackLayout>
                             <Label Text="Position" Margin="0, 15, 0, 5"/>
                             <HorizontalStackLayout>
-                                <material:TextField Title="X" Text="playerStatus.PLAYER_POSITION.x" Loaded="AddFieldToList"/>
-                                <material:TextField Title="Y" Text="playerStatus.PLAYER_POSITION.y" Loaded="AddFieldToList"/>
-                                <material:TextField Title="Z" Text="playerStatus.PLAYER_POSITION.z" Loaded="AddFieldToList"/>
+                                <material:TextField Title="X" ReturnCommandParameter="playerStatus.PLAYER_POSITION.x" Loaded="AddFieldToList"/>
+                                <material:TextField Title="Y" ReturnCommandParameter="playerStatus.PLAYER_POSITION.y" Loaded="AddFieldToList"/>
+                                <material:TextField Title="Z" ReturnCommandParameter="playerStatus.PLAYER_POSITION.z" Loaded="AddFieldToList"/>
                             </HorizontalStackLayout>
 
                             <Label Text="Rotation" Margin="0, 15, 0, 5"/>
                             <HorizontalStackLayout>
-                                <material:TextField Title="X" Text="playerStatus.PLAYER_ROTATION.x" Loaded="AddFieldToList"/>
-                                <material:TextField Title="Y" Text="playerStatus.PLAYER_ROTATION.y" Loaded="AddFieldToList"/>
-                                <material:TextField Title="Z" Text="playerStatus.PLAYER_ROTATION.z" Loaded="AddFieldToList"/>
+                                <material:TextField Title="X" ReturnCommandParameter="playerStatus.PLAYER_ROTATION.x" Loaded="AddFieldToList"/>
+                                <material:TextField Title="Y" ReturnCommandParameter="playerStatus.PLAYER_ROTATION.y" Loaded="AddFieldToList"/>
+                                <material:TextField Title="Z" ReturnCommandParameter="playerStatus.PLAYER_ROTATION.z" Loaded="AddFieldToList"/>
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
 
@@ -49,11 +50,11 @@
                             </uranium:ExpanderView.Header>
 
                             <VerticalStackLayout>
-                                <material:TextField Title="isNutritionsUpdateOn" Text="playerStatus.STATS.isStatsUpdateOn" Loaded="AddFieldToList"/>
-                                <material:TextField Title="fats" Icon="icon_health_kolor_001.png" Text="playerStatus.STATS.health" Loaded="AddFieldToList"/>
-                                <material:TextField Title="carbohydrates" Icon="icon_zzz_trans_001.png" Text="playerStatus.STATS.stamina" Loaded="AddFieldToList"/>
-                                <material:TextField Title="proteins" Icon="icon_sleepy_trans_001.png" Text="playerStatus.STATS.energy" Loaded="AddFieldToList"/>
-                                <material:TextField Title="hydration" Icon="icon_sanity_trans_001.png" Text="playerStatus.STATS.sanity" Loaded="AddFieldToList"/>
+                                <material:TextField Title="isStatsUpdateOn" ReturnCommandParameter="playerStatus.STATS.isStatsUpdateOn" Loaded="AddFieldToList"/>
+                                <material:TextField Title="health" Icon="icon_health_kolor_001.png" ReturnCommandParameter="playerStatus.STATS.health" Loaded="AddFieldToList"/>
+                                <material:TextField Title="stamina" Icon="icon_zzz_trans_001.png" ReturnCommandParameter="playerStatus.STATS.stamina" Loaded="AddFieldToList"/>
+                                <material:TextField Title="energy" Icon="icon_sleepy_trans_001.png" ReturnCommandParameter="playerStatus.STATS.energy" Loaded="AddFieldToList"/>
+                                <material:TextField Title="sanity" Icon="icon_sanity_trans_001.png" ReturnCommandParameter="playerStatus.STATS.sanity" Loaded="AddFieldToList"/>
                             </VerticalStackLayout>
                         </uranium:ExpanderView>
 
@@ -63,11 +64,11 @@
                             </uranium:ExpanderView.Header>
 
                             <VerticalStackLayout>
-                                <material:TextField Title="isNutritionsUpdateOn" Text="playerStatus.MACROELEMENTS.isNutritionsUpdateOn" Loaded="AddFieldToList"/>
-                                <material:TextField Title="fats" Icon="icon_fat_kolor_001.png" Text="playerStatus.MACROELEMENTS.fats" Loaded="AddFieldToList"/>
-                                <material:TextField Title="carbohydrates" Icon="icon_carbs_kolor_001.png" Text="playerStatus.MACROELEMENTS.carbohydrates" Loaded="AddFieldToList"/>
-                                <material:TextField Title="proteins" Icon="icon_health_kolor_001.png" Text="playerStatus.MACROELEMENTS.proteins" Loaded="AddFieldToList"/>
-                                <material:TextField Title="hydration" Icon="icon_water_kolor_001.png" Text="playerStatus.MACROELEMENTS.hydration" Loaded="AddFieldToList"/>
+                                <material:TextField Title="isNutritionsUpdateOn" ReturnCommandParameter="playerStatus.MACROELEMENTS.isNutritionsUpdateOn" Loaded="AddFieldToList"/>
+                                <material:TextField Title="fats" Icon="icon_fat_kolor_001.png" ReturnCommandParameter="playerStatus.MACROELEMENTS.fats" Loaded="AddFieldToList"/>
+                                <material:TextField Title="carbohydrates" Icon="icon_carbs_kolor_001.png" ReturnCommandParameter="playerStatus.MACROELEMENTS.carbohydrates" Loaded="AddFieldToList"/>
+                                <material:TextField Title="proteins" Icon="icon_health_kolor_001.png" ReturnCommandParameter="playerStatus.MACROELEMENTS.proteins" Loaded="AddFieldToList"/>
+                                <material:TextField Title="hydration" Icon="icon_water_kolor_001.png" ReturnCommandParameter="playerStatus.MACROELEMENTS.hydration" Loaded="AddFieldToList"/>
                             </VerticalStackLayout>
                         </uranium:ExpanderView>
                     </VerticalStackLayout>
@@ -92,12 +93,16 @@
             <material:TabItem x:Name="ItemsTab" Title="Items" >
                 <VerticalStackLayout VerticalOptions="Fill" >
                     <Label Text="items Tab"  x:Name="ItemsLabel"/>
-                    <SearchBar Placeholder="Search" x:Name="ItemSearchBar" TextChanged="ItemSearchBar_TextChanged" />
+                    <SearchBar Placeholder="Search" x:Name="ItemSearchBar" SearchButtonPressed="ItemSearchBar_Search"/>
 
-                    <ScrollView Orientation="Vertical" VerticalOptions="Fill" VerticalScrollBarVisibility="Always" MaximumHeightRequest="700" >
-                        <VerticalStackLayout x:Name="ItemsFlexLayoutList" VerticalOptions="Fill" HorizontalOptions="Fill" Spacing="5" Margin="0, 10, 20, 0">
-                            <!-- Items will be added here dynamically -->
-                        </VerticalStackLayout>
+                    <ScrollView x:Name="ItemScrollView" Orientation="Vertical" VerticalOptions="Fill" VerticalScrollBarVisibility="Always" MaximumHeightRequest="400" >
+                        <CollectionView x:Name="ItemsCollectionView" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0, 10, 20, 0" SelectionMode="None" >
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:GHVRObject">
+                                    <components:ItemCardComponent Item="{Binding}"></components:ItemCardComponent>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </ScrollView>
                 </VerticalStackLayout>
             </material:TabItem>

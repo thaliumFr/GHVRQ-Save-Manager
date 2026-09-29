@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GHVRQ_Save_Manager.Components.ItemCardComponent"          
-             xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"   
+             x:Class="GHVRQ_Save_Manager.Components.ItemCardComponent"
+             xmlns:components="clr-namespace:GHVRQ_Save_Manager.Components"
+             xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome" 
+             xmlns:models="clr-namespace:GHVRQ_Save_Manager.Data"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
-             x:Name="ItemCard">
+             x:Name="ItemCard"
+             x:DataType="models:GHVRObject">
     <Border Stroke="{DynamicResource Text}" StrokeShape="RoundRectangle 5" Padding="10" HorizontalOptions="Fill" VerticalOptions="Fill">
-        <Grid RowDefinitions="*, *, *" ColumnDefinitions="*, *" HorizontalOptions="Fill" VerticalOptions="Fill">
-            <Label Grid.Row="0" Grid.Column="0">Item Name</Label>
-            <Label Grid.Row="0" Grid.Column="1">Item UUID</Label>
+        <Grid RowDefinitions="*, *, *" ColumnDefinitions="*, *, *" HorizontalOptions="Fill" VerticalOptions="Fill" >
+            <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" >Item Name</Label>
+            <Label Grid.Row="0" Grid.Column="1" FontAttributes="Bold" >Item UUID</Label>
+            <Label Grid.Row="0" Grid.Column="2" FontAttributes="Bold" >Position</Label>
 
-            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Reference ItemCard}, Path=ItemID}" FontAttributes="Bold" />
-            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Source={x:Reference ItemCard}, Path=ItemUUID}" FontAttributes="Bold" />
-            <Button Grid.Row="2" Grid.Column="1" Text="Add to backpack" ImageSource="backpack_icon.png" HorizontalOptions="End" CommandParameter="{Binding Source={x:Reference ItemCard}, Path=ItemUUID}" Clicked="Button_Clicked"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="{Binding type}" VerticalTextAlignment="Start"/>
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Object_Id}" VerticalTextAlignment="Start"/>
+            <components:Vector3Component Grid.Row="1" Grid.Column="2" XMLElement="{Binding XMLElement}" vector3="{Binding position}" HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+            <Button Grid.Row="2" Grid.Column="3" Text="Add to backpack" ImageSource="backpack_icon.png" HorizontalOptions="End" CommandParameter="{Binding Object_Id}" Clicked="BackpackButton_Clicked"/>
         </Grid>
     </Border>
 </ContentView>

@@ -100,6 +100,22 @@ namespace GHVRQ_Save_Manager.XML
             return node;
         }
 
+        public static XElement? AddElementLink(TextField textField, XElement element)
+        {
+            if (!FieldLinks.ContainsKey(textField))
+            {
+                textField.Text = element.Value;
+
+                textField.TextChanged += (sender, e) =>
+                {
+                    element.Value = textField.Text;
+                };
+                FieldLinks.Add(textField, element);
+            }
+
+            return element;
+        }
+
         public static List<GHVRObject> GetAllGHVRObjects()
         {
             List<GHVRObject> objects = [];
@@ -112,6 +128,7 @@ namespace GHVRQ_Save_Manager.XML
 
                 GHVRObject obj = new()
                 {
+                    XMLElement = itemElement,
                     Object_Id = itemElement.Element("OBJECT_ID")?.Value ?? "",
                     type = Enum.TryParse(itemElement.Element("TYPE")?.Value, out EItemID itemType) ? itemType : EItemID.NONE,
                     position = new System.Numerics.Vector3(
