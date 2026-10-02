@@ -1,5 +1,4 @@
-﻿using GHVRQ_Save_Manager.Components;
-using GHVRQ_Save_Manager.Data;
+﻿using GHVRQ_Save_Manager.Data;
 using GHVRQ_Save_Manager.Systems;
 using GHVRQ_Save_Manager.XML;
 using MvvmHelpers;
@@ -22,7 +21,8 @@ namespace GHVRQ_Save_Manager
 
         private string SaveFilePath = "";
 
-        int HeaderHeight = 260;
+        int HeaderHeight = 200;
+        int SearchBarheight = 60;
 
         public MainPage()
         {
@@ -97,7 +97,9 @@ namespace GHVRQ_Save_Manager
                     double newHeight = Height - HeaderHeight;
                     Debug.WriteLine($"Setting height to {newHeight}, Height is {Height}");
                     PlayerStatusScrollView.MaximumHeightRequest = newHeight;
-                    ItemScrollView.MaximumHeightRequest = newHeight;
+
+                    ItemScrollView.MaximumHeightRequest = newHeight - SearchBarheight;
+                    MapScrollView.MaximumHeightRequest = newHeight;
                 }
             };
         }

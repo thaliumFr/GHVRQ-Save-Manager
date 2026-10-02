@@ -8,6 +8,7 @@
              xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
              xmlns:models="clr-namespace:GHVRQ_Save_Manager.Data"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:pages="clr-namespace:GHVRQ_Save_Manager.Pages"
              x:Class="GHVRQ_Save_Manager.MainPage">
     
     <VerticalStackLayout
@@ -87,7 +88,10 @@
             </material:TabItem>
 
             <material:TabItem Title="World">
-                <Label Text="World Tab" />
+                <VerticalStackLayout>
+                    <Label Text="World Tab" />
+                    
+                </VerticalStackLayout>
             </material:TabItem>
 
             <material:TabItem x:Name="ItemsTab" Title="Items" >
@@ -110,11 +114,10 @@
                 <Label Text="Notebook Tab" />
             </material:TabItem>
             <material:TabItem Title="Map">
-                <Label Text="map Tab" />
+                <ScrollView VerticalOptions="Fill" VerticalScrollBarVisibility="Always" x:Name="MapScrollView">
+                    <pages:MapPage  ></pages:MapPage>
+                </ScrollView>
             </material:TabItem>
         </material:TabView>
-
-        
-
     </VerticalStackLayout>
 </uranium:UraniumContentPage>
