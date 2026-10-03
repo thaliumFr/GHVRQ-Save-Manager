@@ -1,4 +1,5 @@
 ﻿using GHVRQ_Save_Manager.Data;
+using System.Diagnostics;
 using System.Xml.Linq;
 using UraniumUI.Material.Controls;
 using CheckBox = UraniumUI.Material.Controls.CheckBox;
@@ -140,7 +141,9 @@ namespace GHVRQ_Save_Manager.XML
         {
             List<GHVRObject> objects = [];
             XElement? itemsElement = GetCategoryElement(Category.Items)?.Element("OBJECTS_LIST");
-            if (itemsElement == null) return objects;
+
+            if (itemsElement == null) return [];
+
             foreach (XElement itemElement in itemsElement.Elements("OBJECT"))
             {
                 XElement? pos = itemElement.Element("POSITION");
@@ -164,6 +167,9 @@ namespace GHVRQ_Save_Manager.XML
                         w = float.Parse(rot?.Attribute("w")?.Value ?? "1")
                     }
                 };
+
+                Debug.WriteLine($"Loaded GHVRObject: ID={obj.Object_Id}, Type={obj.type}, Position=({obj.position.X}, {obj.position.Y}, {obj.position.Z}), Rotation=({obj.rotation.x}, {obj.rotation.y}, {obj.rotation.z}, {obj.rotation.w})");
+
                 objects.Add(obj);
             }
             return objects;

@@ -8,6 +8,13 @@ namespace GHVRQ_Save_Manager.Systems
 {
     internal class Tools
     {
+#if DEBUG
+        public static bool IsDebug = true;
+#else
+        public static bool IsDebug = false;
+#endif
+        public static readonly string DebugPath= Path.Combine("D:\\Documents\\Dev\\BatScripts\\TestSaveFiles");
+
         public static readonly string appdata = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GHVRQSaveManager");
         public static readonly string adbPath = Path.Combine(appdata, "platform-tools");
         public static readonly string adbExecutablePath = Path.Combine(adbPath, "adb.exe");

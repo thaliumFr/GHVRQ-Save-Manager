@@ -12,30 +12,18 @@ public partial class Vector3Component : ContentView
 	public Vector3Component()
 	{
 		InitializeComponent();
-	}
-
-    public static readonly BindableProperty XMLElementProperty = BindableProperty.Create(
-        nameof(XMLElement),
-        typeof(XElement),
-        typeof(Vector3Component),
-        null);
-
-    public XElement XMLElement
-    {
-        get => (XElement)GetValue(XMLElementProperty);
-        set => SetValue(XMLElementProperty, value);
     }
 
-    public static readonly BindableProperty vector3Property = BindableProperty.Create(
-        nameof(XMLElement),
-        typeof(Vector3),
+    public static readonly BindableProperty Vector3DataProperty = BindableProperty.Create(
+        nameof(Vector3Data),
+        typeof(Vector3Data),
         typeof(Vector3Component),
         null);
 
-    public Vector3 vector3
+    public Vector3Data Vector3Data
     {
-        get => (Vector3)GetValue(vector3Property);
-        set => SetValue(vector3Property, value);
+        get => (Vector3Data)GetValue(Vector3DataProperty);
+        set => SetValue(Vector3DataProperty, value);
     }
 
     private void AddFieldToList(object sender, EventArgs e)
@@ -47,12 +35,14 @@ public partial class Vector3Component : ContentView
             return;
         }
 
-        XElement? el = XMLElement.Element("POSITION")?.Element(textField.ReturnCommandParameter.ToString());
+        XElement? el = Vector3Data.XmlElement?.Element("POSITION")?.Element(textField.ReturnCommandParameter.ToString());
         if (el == null)
         {
             Debug.WriteLine($"Element for {textField.ReturnCommandParameter} not found.");
             return;
         }
+
+        Debug.WriteLine($"Adding field link for {Vector3Data.XmlElement?.BaseUri}.{textField.ReturnCommandParameter}.");
 
         XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
     }

@@ -11,6 +11,7 @@ namespace GHVRQ_Save_Manager
 {
     public partial class MainPage : UraniumContentPage
     {
+
         public static event EventHandler<bool>? OnQuestDetected;
         public static bool IsQuestDetected;
 
@@ -79,6 +80,12 @@ namespace GHVRQ_Save_Manager
 
             //Setting Tab content
 
+            if (Tools.IsDebug)
+            {
+                SaveFileLoader.LoadSaveFiles();
+                SaveFileDropdown.IsEnabled = true;
+            }
+
             OutputLabel.Text = "Checking for devices...";
 
             this.BindingContext = this;
@@ -109,6 +116,10 @@ namespace GHVRQ_Save_Manager
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
+                if (Tools.IsDebug){
+                    OutputLabel.Text = "Debug mode, skipping device detection.";
+                    return;
+                }
                 if (devices != null && devices.Length > 0)
                 {
                     if (devices[0].Model.Contains("Quest"))

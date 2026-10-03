@@ -30,6 +30,7 @@ namespace GHVRQ_Save_Manager.Systems
             foreach (var Dir in SaveFolders)
             {
                 string FolderPath = Path.Combine(outputDirectory, "GHVRSaveFiles", Dir );
+                if (Tools.IsDebug) FolderPath = Path.Combine(Tools.DebugPath, Dir);
                 Debug.WriteLine(FolderPath);
                 if (!Directory.Exists(FolderPath)) continue;
                 Directory.GetFiles(FolderPath)?.ToList()?.ForEach(file =>

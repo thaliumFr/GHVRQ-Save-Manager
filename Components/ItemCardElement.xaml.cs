@@ -1,7 +1,10 @@
+using ABI.System.Numerics;
 using GHVRQ_Save_Manager.Data;
 using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
+using Vector3 = System.Numerics.Vector3;
 
 namespace GHVRQ_Save_Manager.Components;
 
@@ -11,6 +14,27 @@ public partial class ItemCardComponent : ContentView
 	{
         InitializeComponent();
     }
+
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+
+        if(propertyName == "Item")
+        {
+            Vector3Data data = new()
+            {
+                Vector3 = Item.position,
+                XmlElement = Item.XMLElement
+                
+            };
+
+            Debug.WriteLine($"ItemCardComponent OnPropertyChanged: {data.Vector3.ToString()}, {data.XmlElement?.Name ?? "null"}");
+
+            ItemPositionComponent.Vector3Data = data;
+        }
+    }
+
+
 
     public static readonly BindableProperty XMLElementProperty = BindableProperty.Create(
     nameof(XMLElement),
@@ -73,6 +97,9 @@ public partial class ItemCardComponent : ContentView
         ItemPosition = value.position;
         ItemID = value.type;
         ItemUUID = value.Object_Id;
+        XMLElement = value.XMLElement;
+
+        Debug.WriteLine($"ItemCardComponent SetItemValue: {ItemPosition.ToString()}, {XMLElement?.ToString() ?? "null"}");
     }
 
     public GHVRObject Item
