@@ -1,3 +1,4 @@
+using GHVRQ_Save_Manager.Data;
 using GHVRQ_Save_Manager.XML;
 using System.Diagnostics;
 using System.Numerics;
@@ -11,8 +12,6 @@ public partial class Vector3Component : ContentView
 	public Vector3Component()
 	{
 		InitializeComponent();
-
-
 	}
 
     public static readonly BindableProperty XMLElementProperty = BindableProperty.Create(
@@ -55,6 +54,6 @@ public partial class Vector3Component : ContentView
             return;
         }
 
-        XMLReaderSystem.AddElementLink(textField, el);
+        XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
     }
 }

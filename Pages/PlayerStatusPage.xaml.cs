@@ -1,8 +1,10 @@
+using UraniumUI.Material.Controls;
+
 namespace GHVRQ_Save_Manager.Pages;
 
-public partial class MapPage : ContentView
+public partial class PlayerStatusPage : ContentView
 {
-	public MapPage()
+	public PlayerStatusPage()
 	{
 		InitializeComponent();
 	}

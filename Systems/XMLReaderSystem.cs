@@ -1,6 +1,7 @@
 ﻿using GHVRQ_Save_Manager.Data;
 using System.Xml.Linq;
 using UraniumUI.Material.Controls;
+using CheckBox = UraniumUI.Material.Controls.CheckBox;
 
 namespace GHVRQ_Save_Manager.XML
 {
@@ -10,7 +11,7 @@ namespace GHVRQ_Save_Manager.XML
 
         public static event EventHandler? OnXMLDocumentLoaded;
 
-        public static Dictionary<TextField, XElement> FieldLinks = [];
+        public static Dictionary<IUniversalFieldData, XElement> FieldLinks = [];
 
         public static ref XDocument? Load(string xmlFilePath)
         {
@@ -19,9 +20,9 @@ namespace GHVRQ_Save_Manager.XML
             CurrentDoc = XDocument.Load(xmlFilePath);
 
             FieldLinks.Clear();
-            foreach (var (textField, path) in MainPage.TextFieldsList)
+            foreach (var (field, path) in MainPage.InputFieldPathDict)
             {
-                AddElementLink(textField, path);
+                AddElementLink(field, path);
             }
 
             OnXMLDocumentLoaded?.Invoke(null, EventArgs.Empty);
@@ -33,7 +34,7 @@ namespace GHVRQ_Save_Manager.XML
             CurrentDoc = XDocument.Parse(xmlString);
 
             FieldLinks.Clear();
-            foreach (var (textField, path) in MainPage.TextFieldsList)
+            foreach (var (textField, path) in MainPage.InputFieldPathDict)
             {
                 AddElementLink(textField, path);
             }
@@ -77,36 +78,59 @@ namespace GHVRQ_Save_Manager.XML
             return CurrentDoc?.Root?.Element(CategoryName);
         }
 
-        public static XElement? AddElementLink(TextField textField, string path)
+        public static XElement? AddElementLink(IUniversalFieldData field, string path)
         {
-            XElement? node = CurrentDoc?.Root;
+            XElement? element = CurrentDoc?.Root;
 
             path.Split(".").ToList().ForEach(name =>
             {
-                node = node?.Element(name);
+                element = element?.Element(name);
             });
-            textField.Text = node.Value;
+            field.Value = element.Value;
 
-            textField.TextChanged += (sender, e) =>
+            if (field is TextField textField)
             {
-                node.Value = textField.Text;
-            };
-            FieldLinks.Add(textField, node);
-
-            return node;
-        }
-
-        public static XElement? AddElementLink(TextField textField, XElement element)
-        {
-            if (!FieldLinks.ContainsKey(textField))
-            {
-                textField.Text = element.Value;
-
                 textField.TextChanged += (sender, e) =>
                 {
                     element.Value = textField.Text;
                 };
-                FieldLinks.Add(textField, element);
+                textField.Text = element.Value;
+            }
+            else if (field is CheckBox checkBox)
+            {
+                checkBox.CheckChanged += (sender, e) =>
+                {
+                    element.Value = checkBox.IsChecked.ToString();
+                };
+                checkBox.IsChecked = bool.Parse(element.Value);
+            }
+
+            FieldLinks.Add(field, element);
+
+            return element;
+        }
+
+        public static XElement? AddElementLink(IUniversalFieldData field, XElement element)
+        {
+            if (!FieldLinks.ContainsKey(field))
+            {
+                if (field is TextField textField)
+                {
+                    textField.TextChanged += (sender, e) =>
+                    {
+                        element.Value = textField.Text;
+                    };
+                    textField.Text = element.Value;
+                }
+                else if (field is CheckBox checkBox)
+                {
+                    checkBox.CheckChanged += (sender, e) =>
+                    {
+                        element.Value = checkBox.IsChecked.ToString();
+                    };
+                    checkBox.IsChecked = bool.Parse(element.Value);
+                }
+                FieldLinks.Add(field, element);
             }
 
             return element;

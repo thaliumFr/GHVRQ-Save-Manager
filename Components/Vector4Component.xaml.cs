@@ -1,3 +1,4 @@
+using GHVRQ_Save_Manager.Data;
 using GHVRQ_Save_Manager.XML;
 using System.Diagnostics;
 using System.Numerics;
@@ -53,6 +54,6 @@ public partial class Vector4Component : ContentView
             return;
         }
 
-        XMLReaderSystem.AddElementLink(textField, el);
+        XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
     }
 }

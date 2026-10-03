@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+             xmlns:components="clr-namespace:GHVRQ_Save_Manager.Components"
+             xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             x:Class="GHVRQ_Save_Manager.Pages.PlayerStatusPage">
+    <VerticalStackLayout VerticalOptions="Fill">
+        <VerticalStackLayout>
+            <Label Text="Position" Margin="0, 15, 0, 5" FontAttributes="Bold"/>
+            <HorizontalStackLayout>
+                <material:TextField Title="X" ReturnCommandParameter="playerStatus.PLAYER_POSITION.x" Loaded="AddFieldToList"/>
+                <material:TextField Title="Y" ReturnCommandParameter="playerStatus.PLAYER_POSITION.y" Loaded="AddFieldToList"/>
+                <material:TextField Title="Z" ReturnCommandParameter="playerStatus.PLAYER_POSITION.z" Loaded="AddFieldToList"/>
+            </HorizontalStackLayout>
+
+            <Label Text="Rotation" Margin="0, 15, 0, 5" FontAttributes="Bold"/>
+            <HorizontalStackLayout>
+                <material:TextField Title="X" ReturnCommandParameter="playerStatus.PLAYER_ROTATION.x" Loaded="AddFieldToList"/>
+                <material:TextField Title="Y" ReturnCommandParameter="playerStatus.PLAYER_ROTATION.y" Loaded="AddFieldToList"/>
+                <material:TextField Title="Z" ReturnCommandParameter="playerStatus.PLAYER_ROTATION.z" Loaded="AddFieldToList"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <FlexLayout JustifyContent="Start" Margin="0,50" Direction="Row" FlowDirection="LeftToRight" HorizontalOptions="Fill" Wrap="Wrap">
+
+            <VerticalStackLayout Margin="0, 0, 25, 0">
+                <Label Text="STATS" FontAttributes="Bold" Margin="0, 0, 0, 5"/>
+                <HorizontalStackLayout Margin="0, 5">
+                    <Label Text="isStatsUpdateOn" />
+                    <material:CheckBox CommandParameter="playerStatus.STATS.isStatsUpdateOn" Loaded="AddFieldToList" Margin="10, 0"/>
+                </HorizontalStackLayout>
+                <material:TextField Title="health" Icon="icon_health_kolor_001.png" Margin="0, 5" ReturnCommandParameter="playerStatus.STATS.health" Loaded="AddFieldToList"/>
+                <material:TextField Title="stamina" Icon="icon_zzz_trans_001.png" Margin="0, 5" ReturnCommandParameter="playerStatus.STATS.stamina" Loaded="AddFieldToList"/>
+                <material:TextField Title="energy" Icon="icon_sleepy_trans_001.png" Margin="0, 5" ReturnCommandParameter="playerStatus.STATS.energy" Loaded="AddFieldToList"/>
+                <material:TextField Title="sanity" Icon="icon_sanity_trans_001.png" Margin="0, 5" ReturnCommandParameter="playerStatus.STATS.sanity" Loaded="AddFieldToList"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Margin="0, 0, 25, 0">
+                <Label Text="MACROELEMENTS" FontAttributes="Bold" Margin="0, 0, 0, 5"/>
+                <HorizontalStackLayout Margin="0, 5">
+                    <Label Text="isNutritionsUpdateOn" />
+                    <material:CheckBox CommandParameter="playerStatus.MACROELEMENTS.isNutritionsUpdateOn" Loaded="AddFieldToList" Margin="10, 0"/>
+                </HorizontalStackLayout>
+                <material:TextField Title="fats" Icon="icon_fat_kolor_001.png" Margin="0, 5" ReturnCommandParameter="playerStatus.MACROELEMENTS.fats" Loaded="AddFieldToList"/>
+                <material:TextField Title="carbohydrates"  Icon="icon_carbs_kolor_001.png" Margin="0, 5" ReturnCommandParameter="playerStatus.MACROELEMENTS.carbohydrates" Loaded="AddFieldToList"/>
+                <material:TextField Title="proteins" Icon="icon_health_kolor_001.png" Margin="0, 5" ReturnCommandParameter="playerStatus.MACROELEMENTS.proteins" Loaded="AddFieldToList"/>
+                <material:TextField Title="hydration" Icon="icon_water_kolor_001.png" Margin="0, 5" ReturnCommandParameter="playerStatus.MACROELEMENTS.hydration" Loaded="AddFieldToList"/>
+            </VerticalStackLayout>
+        </FlexLayout>
+    </VerticalStackLayout>
+</ContentView>

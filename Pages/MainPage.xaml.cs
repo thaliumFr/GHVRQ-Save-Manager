@@ -5,6 +5,7 @@ using MvvmHelpers;
 using System.Diagnostics;
 using UraniumUI.Material.Controls;
 using UraniumUI.Pages;
+using CheckBox = UraniumUI.Material.Controls.CheckBox;
 
 namespace GHVRQ_Save_Manager
 {
@@ -13,7 +14,7 @@ namespace GHVRQ_Save_Manager
         public static event EventHandler<bool>? OnQuestDetected;
         public static bool IsQuestDetected;
 
-        public static Dictionary<TextField, string> TextFieldsList = [];
+        public static Dictionary<IUniversalFieldData, string> InputFieldPathDict = [];
         List<GHVRObject> objects = [];
         List<GHVRObject> filteredObjects = [];
 
@@ -26,7 +27,7 @@ namespace GHVRQ_Save_Manager
 
         public MainPage()
         {
-            TextFieldsList = [];
+            InputFieldPathDict = [];
             ObjectsToDisplay = [];
             InitializeComponent();
 
@@ -148,10 +149,31 @@ namespace GHVRQ_Save_Manager
 
         public static void AddFieldToList(object sender, EventArgs e)
         {
-            TextField textField = (TextField)sender;
-            if(!TextFieldsList.ContainsKey(textField) && !String.IsNullOrEmpty($"{textField.ReturnCommandParameter}"))
+            object field = sender;
+
+            if (field is CheckBox checkBox)
             {
-                TextFieldsList.Add(textField, $"{textField.ReturnCommandParameter}");
+                ToggleFieldData toggleFieldData = new ()
+                {
+                    Field = checkBox
+                };
+
+                if (!InputFieldPathDict.ContainsKey(toggleFieldData) && !String.IsNullOrEmpty($"{checkBox.CommandParameter}"))
+                {
+                    InputFieldPathDict.Add(toggleFieldData, $"{checkBox.CommandParameter}");
+                }
+            }
+            else if (field is TextField textField)
+            {
+                TextFieldData textFieldData = new ()
+                {
+                    Field = textField
+                };
+
+                if (!InputFieldPathDict.ContainsKey(textFieldData) && !String.IsNullOrEmpty($"{textField.ReturnCommandParameter}"))
+                {
+                    InputFieldPathDict.Add(textFieldData, $"{textField.ReturnCommandParameter}");
+                }
             }
         }
 
