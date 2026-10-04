@@ -4,13 +4,12 @@ GHVRQ Save Manager is a tool that allows you to manage your save files for the g
 Backing up save files will probably come later. As well as a tool to report bugs and issues with the game.
 
 
-## Development Vocabulary
-**UPS - Universal Path System**
+## Development Dictionary
+### UPS - Universal Path System
 Reffers to the system that makes correspond a path to a location in the XML file, and vice versa.
-
 ex: `playerStatus.STATS.health`
 
-**UIFS - Universal Input Field System**
+### UIFS - Universal Input Field System
 Reffers to the system that makes any UI field (text box, checkbox, etc.) work with the XML file reader.
 
 ## Credits

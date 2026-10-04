@@ -1,4 +1,5 @@
 ﻿using GHVRQ_Save_Manager.Data;
+using System.Diagnostics;
 using System.Xml.Linq;
 using UraniumUI.Material.Controls;
 using CheckBox = UraniumUI.Material.Controls.CheckBox;
@@ -11,7 +12,7 @@ namespace GHVRQ_Save_Manager.XML
 
         public static event EventHandler? OnXMLDocumentLoaded;
 
-        public static Dictionary<IUniversalFieldData, XElement> FieldLinks = [];
+        public static Dictionary<IUniversalInputFieldData, XElement> FieldLinks = [];
 
         public static ref XDocument? Load(string xmlFilePath)
         {
@@ -78,43 +79,7 @@ namespace GHVRQ_Save_Manager.XML
             return CurrentDoc?.Root?.Element(CategoryName);
         }
 
-        public static XElement? AddElementLink(IUniversalFieldData field, string path)
-        {
-            XElement? element = CurrentDoc?.Root;
-
-            path.Split(".").ToList().ForEach(name =>
-            {
-                element = element?.Element(name);
-            });
-
-            if (element == null)
-            {
-                throw new Exception($"Could not find element with UPS \"{path}\"");
-            }
-
-            if (field is TextField textField)
-            {
-                textField.TextChanged += (sender, e) =>
-                {
-                    element.Value = textField.Text;
-                };
-                textField.Text = element.Value;
-            }
-            else if (field is CheckBox checkBox)
-            {
-                checkBox.CheckChanged += (sender, e) =>
-                {
-                    element.Value = checkBox.IsChecked.ToString();
-                };
-                checkBox.IsChecked = bool.Parse(element.Value);
-            }
-
-            FieldLinks.Add(field, element);
-
-            return element;
-        }
-
-        public static XElement? AddElementLink(IUniversalFieldData field, XElement element)
+        public static XElement? AddElementLink(IUniversalInputFieldData field, XElement element)
         {
             if (field is TextFieldData textFieldData)
             {
@@ -123,6 +88,7 @@ namespace GHVRQ_Save_Manager.XML
                     element.Value = textFieldData.Field.Text;
                 };
 
+                Debug.WriteLine(element);
                 field.Value = element.Value;
             }
             else if (field is ToggleFieldData checkBox)
@@ -136,6 +102,23 @@ namespace GHVRQ_Save_Manager.XML
             FieldLinks.TryAdd(field, element);
 
             return element;
+        }
+
+        public static XElement? AddElementLink(IUniversalInputFieldData field, string path)
+        {
+            XElement? element = CurrentDoc?.Root;
+
+            path.Split(".").ToList().ForEach(name =>
+            {
+                element = element?.Element(name);
+            });
+
+            if (element == null)
+            {
+                Debug.WriteLine($"Could not find element with UPS \"{path}\"");
+            }
+
+            return AddElementLink(field, element);
         }
 
         public static List<GHVRObject> GetAllGHVRObjects()

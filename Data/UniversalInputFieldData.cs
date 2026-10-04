@@ -5,24 +5,24 @@ using CheckBox = UraniumUI.Material.Controls.CheckBox;
 
 namespace GHVRQ_Save_Manager.Data
 {
-    public interface IUniversalFieldData
+    public interface IUniversalInputFieldData
     {
         object Field { get; set; }
         object Value { get; set; }
     }
 
-    public interface IUniversalFieldData<TField, TValue> : IUniversalFieldData
+    public interface IUniversalInputFieldData<TField, TValue> : IUniversalInputFieldData
     {
         new TField Field { get; set; }
         new TValue Value { get; set; }
     }
 
-    public struct TextFieldData : IUniversalFieldData<TextField, string>
+    public struct TextFieldData : IUniversalInputFieldData<TextField, string>
     {
         public TextField Field { get; set; }
         public readonly string Value { get { return Field.Text; } set { Field.Text = value; } }
-        object IUniversalFieldData.Field { get => Field; set => Field = (TextField)value; }
-        object IUniversalFieldData.Value { get => Value; set => Value = (string)value; }
+        object IUniversalInputFieldData.Field { get => Field; set => Field = (TextField)value; }
+        object IUniversalInputFieldData.Value { get => Value; set => Value = (string)value; }
 
         public readonly override bool Equals([NotNullWhen(true)] object? obj)
         {
@@ -35,12 +35,12 @@ namespace GHVRQ_Save_Manager.Data
         }
     }
 
-    public struct ToggleFieldData : IUniversalFieldData<CheckBox, bool>
+    public struct ToggleFieldData : IUniversalInputFieldData<CheckBox, bool>
     {
         public CheckBox Field { get; set; }
         public readonly bool Value { get { return Field.IsChecked; } set { Field.IsChecked = value; } }
-        object IUniversalFieldData.Field { get => Field; set => Field = (CheckBox)value; }
-        object IUniversalFieldData.Value { get => Value; set => Value = bool.Parse((string)value); }
+        object IUniversalInputFieldData.Field { get => Field; set => Field = (CheckBox)value; }
+        object IUniversalInputFieldData.Value { get => Value; set => Value = bool.Parse((string)value); }
 
         public readonly override bool Equals([NotNullWhen(true)] object? obj)
         {

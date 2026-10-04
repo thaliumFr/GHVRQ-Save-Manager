@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:GHVRQ_Save_Manager"
              xmlns:components="clr-namespace:GHVRQ_Save_Manager.Components"
              xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
-             xmlns:models="clr-namespace:GHVRQ_Save_Manager.Data"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:pages="clr-namespace:GHVRQ_Save_Manager.Pages"
              x:Class="GHVRQ_Save_Manager.MainPage">
@@ -28,7 +27,7 @@
         <material:TabView x:Name="TabbedView" IsVisible="False" VerticalOptions="Fill">
             <material:TabItem Title="Player Status" >
                 <ScrollView x:Name="PlayerStatusScrollView" Padding="50" Orientation="Vertical" VerticalOptions="Fill">
-                    <pages:PlayerStatusPage></pages:PlayerStatusPage>    
+                    <pages:PlayerStatusPage x:Name="PlayerStatusPage"/>
                 </ScrollView>
             </material:TabItem>
 
@@ -51,23 +50,13 @@
             </material:TabItem>
 
             <material:TabItem x:Name="ItemsTab" Title="Items" >
-                <VerticalStackLayout VerticalOptions="Fill" >
-                    <Label Text="items Tab"  x:Name="ItemsLabel"/>
-                    <SearchBar Placeholder="Search" x:Name="ItemSearchBar" SearchButtonPressed="ItemSearchBar_Search"/>
-
-                    
-                        <CollectionView x:Name="ItemsCollectionView" VerticalOptions="Fill" VerticalScrollBarVisibility="Always" HorizontalOptions="Fill" Margin="0, 10, 20, 0" SelectionMode="None" >
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="models:GHVRObject">
-                                    <components:ItemCardComponent Item="{Binding}"></components:ItemCardComponent>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                </VerticalStackLayout>
+                <pages:ItemsPage x:Name="ItemsPageView" BindingContext="{Binding}"/>
             </material:TabItem>
+            
             <material:TabItem Title="Notebook">
                 <Label Text="Notebook Tab" />
             </material:TabItem>
+            
             <material:TabItem Title="Map">
                 <ScrollView VerticalOptions="Fill" VerticalScrollBarVisibility="Always" x:Name="MapScrollView">
                     <pages:MapPage/>

@@ -1,4 +1,5 @@
 ﻿using GHVRQ_Save_Manager.Data;
+using GHVRQ_Save_Manager.Pages;
 using GHVRQ_Save_Manager.Systems;
 using GHVRQ_Save_Manager.XML;
 using MvvmHelpers;
@@ -15,21 +16,17 @@ namespace GHVRQ_Save_Manager
         public static event EventHandler<bool>? OnQuestDetected;
         public static bool IsQuestDetected;
 
-        public static Dictionary<IUniversalFieldData, string> InputFieldPathDict = [];
-        List<GHVRObject> objects = [];
-        List<GHVRObject> filteredObjects = [];
+        public static Dictionary<IUniversalInputFieldData, string> InputFieldPathDict = [];
 
-        public ObservableRangeCollection<GHVRObject> ObjectsToDisplay { get; set; }
 
         private string SaveFilePath = "";
 
-        int HeaderHeight = 200;
-        int SearchBarheight = 60;
+        static int HeaderHeight = 200;
+        static int SearchBarheight = 60;
 
         public MainPage()
         {
             InputFieldPathDict = [];
-            ObjectsToDisplay = [];
             InitializeComponent();
 
             // Setting up event handlers
@@ -49,9 +46,8 @@ namespace GHVRQ_Save_Manager
             XMLReaderSystem.OnXMLDocumentLoaded += (_, _) =>
             {
                 Debug.WriteLine("XML Document loaded");
-                objects = XMLReaderSystem.GetAllGHVRObjects();
-                filteredObjects = objects;
-                UpdateObjectsToDisplay();
+
+                ItemsPage.UpdateGHVRObjectsList();
             };
 
 
@@ -75,7 +71,6 @@ namespace GHVRQ_Save_Manager
             TabbedView.SelectedTabChanged += (_, e) =>
             {
                 Debug.WriteLine($"Current tab: {e.Title}");
-                Debug.WriteLine($"Items count: {filteredObjects.Count}/{objects.Count}");
             };
 
             //Setting Tab content
@@ -89,7 +84,6 @@ namespace GHVRQ_Save_Manager
             OutputLabel.Text = "Checking for devices...";
 
             this.BindingContext = this;
-            ItemsCollectionView.SetBinding(ItemsView.ItemsSourceProperty, static (MainPage p) => p.ObjectsToDisplay);
 
         }
 
@@ -102,14 +96,25 @@ namespace GHVRQ_Save_Manager
             {
                 if (Height > HeaderHeight)
                 {
-                    double newHeight = Height - HeaderHeight;
-                    Debug.WriteLine($"Setting height to {newHeight}, Height is {Height}");
-                    PlayerStatusScrollView.MaximumHeightRequest = newHeight;
-
-                    ItemsCollectionView.MaximumHeightRequest = newHeight - SearchBarheight;
-                    MapScrollView.MaximumHeightRequest = newHeight;
+                    PlayerStatusScrollView.MaximumHeightRequest = GetDesiredElementHeight(Height, false);
+                    ItemsPageView.MaximumHeightRequest = GetDesiredElementHeight(Height, true);
+                    MapScrollView.MaximumHeightRequest = GetDesiredElementHeight(Height, false);
                 }
             };
+        }
+
+        public static double GetDesiredElementHeight(double height,bool withSearchBar = false)
+        {
+            double newHeight = height - HeaderHeight;
+            if (withSearchBar)
+            {
+                return newHeight - SearchBarheight;
+            }
+            else
+            {
+                return newHeight;
+            }
+            
         }
 
         private void ADB_OnDevicesChanged(object? sender, ADB.DeviceData[] devices)
@@ -198,32 +203,5 @@ namespace GHVRQ_Save_Manager
             SaveFileLoader.PushSaveFiles(out var results);
         }
 
-        private void UpdateObjectsToDisplay()
-        {
-            ObjectsToDisplay.Clear();
-            ObjectsToDisplay.AddRange(filteredObjects);
-        }
-
-
-        private void ItemSearchBar_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            SearchBar searchBar = (SearchBar)sender;
-            if (String.IsNullOrEmpty(searchBar.Text)) filteredObjects = objects;
-            else if( int.TryParse(searchBar.Text, out int result))
-            {
-                filteredObjects = objects.Where(o => o.Object_Id == searchBar.Text).ToList();
-            }
-            else
-            {
-                filteredObjects = objects.Where(o => o.type.ToString().Contains(searchBar.Text.ToUpper())).ToList();
-            }
-            Debug.WriteLine($"Found {filteredObjects.Count} with filter");
-            UpdateObjectsToDisplay();
-        }
-
-        private void ItemSearchBar_Search(object sender, EventArgs e)
-        {
-            ItemSearchBar_TextChanged(sender, new TextChangedEventArgs(ItemSearchBar.Text, ItemSearchBar.Text));
-        }
     }
 }
