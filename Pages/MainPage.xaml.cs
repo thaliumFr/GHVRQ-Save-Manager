@@ -106,7 +106,7 @@ namespace GHVRQ_Save_Manager
                     Debug.WriteLine($"Setting height to {newHeight}, Height is {Height}");
                     PlayerStatusScrollView.MaximumHeightRequest = newHeight;
 
-                    ItemScrollView.MaximumHeightRequest = newHeight - SearchBarheight;
+                    ItemsCollectionView.MaximumHeightRequest = newHeight - SearchBarheight;
                     MapScrollView.MaximumHeightRequest = newHeight;
                 }
             };

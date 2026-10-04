@@ -55,15 +55,14 @@
                     <Label Text="items Tab"  x:Name="ItemsLabel"/>
                     <SearchBar Placeholder="Search" x:Name="ItemSearchBar" SearchButtonPressed="ItemSearchBar_Search"/>
 
-                    <ScrollView x:Name="ItemScrollView" Orientation="Vertical" VerticalOptions="Fill" VerticalScrollBarVisibility="Always" MaximumHeightRequest="400" >
-                        <CollectionView x:Name="ItemsCollectionView" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0, 10, 20, 0" SelectionMode="None" >
+                    
+                        <CollectionView x:Name="ItemsCollectionView" VerticalOptions="Fill" VerticalScrollBarVisibility="Always" HorizontalOptions="Fill" Margin="0, 10, 20, 0" SelectionMode="None" >
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="models:GHVRObject">
                                     <components:ItemCardComponent Item="{Binding}"></components:ItemCardComponent>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
-                    </ScrollView>
                 </VerticalStackLayout>
             </material:TabItem>
             <material:TabItem Title="Notebook">
@@ -71,7 +70,7 @@
             </material:TabItem>
             <material:TabItem Title="Map">
                 <ScrollView VerticalOptions="Fill" VerticalScrollBarVisibility="Always" x:Name="MapScrollView">
-                    <pages:MapPage  ></pages:MapPage>
+                    <pages:MapPage/>
                 </ScrollView>
             </material:TabItem>
         </material:TabView>
