@@ -1,10 +1,5 @@
-using ABI.System.Numerics;
 using GHVRQ_Save_Manager.Data;
 using System.Diagnostics;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
-using Vector3 = System.Numerics.Vector3;
 
 namespace GHVRQ_Save_Manager.Components;
 

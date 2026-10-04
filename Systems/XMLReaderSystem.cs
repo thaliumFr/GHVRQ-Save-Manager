@@ -1,5 +1,4 @@
 ﻿using GHVRQ_Save_Manager.Data;
-using System.Diagnostics;
 using System.Xml.Linq;
 using UraniumUI.Material.Controls;
 using CheckBox = UraniumUI.Material.Controls.CheckBox;
@@ -87,7 +86,11 @@ namespace GHVRQ_Save_Manager.XML
             {
                 element = element?.Element(name);
             });
-            field.Value = element.Value;
+
+            if (element == null)
+            {
+                throw new Exception($"Could not find element with UPS \"{path}\"");
+            }
 
             if (field is TextField textField)
             {
