@@ -15,29 +15,11 @@ public partial class ItemCardComponent : ContentView
         InitializeComponent();
     }
 
-    public static readonly BindableProperty XMLElementProperty = BindableProperty.Create(
-    nameof(XMLElement),
-    typeof(XElement),
-    typeof(ItemCardComponent),
-    null);
-
-    public XElement XMLElement
-    {
-        get => (XElement)GetValue(XMLElementProperty);
-        set => SetValue(XMLElementProperty, value);
-    }
-
     public static readonly BindableProperty ItemProperty = BindableProperty.Create(
         nameof(Item),
         typeof(GHVRObject),
         typeof(ItemCardComponent),
         new GHVRObject());
-
-    private void SetItemValue(GHVRObject value)
-    {
-        SetValue(ItemProperty, value);
-        XMLElement = value.XMLElement;
-    }
 
     public GHVRObject Item
     {

@@ -7,29 +7,29 @@ using UraniumUI.Material.Controls;
 
 namespace GHVRQ_Save_Manager.Components;
 
-public partial class Vector3Component : ContentView
+public partial class Vector3InputComponent : ContentView
 {
-	public Vector3Component()
+	public Vector3InputComponent()
 	{
 		InitializeComponent();
     }
-/*
-    public static readonly BindableProperty Vector3DataProperty = BindableProperty.Create(
-        nameof(Vector3Data),
-        typeof(Vector3Data),
-        typeof(Vector3Component),
+
+    public static readonly BindableProperty XElementValueProperty = BindableProperty.Create(
+        nameof(XElementValue),
+        typeof(XElement),
+        typeof(Vector3InputComponent),
         null);
 
-    public Vector3Data Vector3Data
+    public XElement XElementValue
     {
-        get => (Vector3Data)GetValue(Vector3DataProperty);
-        set => SetValue(Vector3DataProperty, value);
+        get => (XElement)GetValue(XElementValueProperty);
+        set => SetValue(XElementValueProperty, value);
     }
-*/
+
     public static readonly BindableProperty Vector3valProperty = BindableProperty.Create(
         nameof(Vector3val),
         typeof(Vector3),
-        typeof(Vector3Component),
+        typeof(Vector3InputComponent),
         Vector3.Zero);
 
     public Vector3 Vector3val
@@ -37,8 +37,6 @@ public partial class Vector3Component : ContentView
         get => (Vector3)GetValue(Vector3valProperty);
         set => SetValue(Vector3valProperty, value);
     }
-
-
 
     private void AddFieldToList(object sender, EventArgs e)
     {
@@ -49,16 +47,13 @@ public partial class Vector3Component : ContentView
             return;
 
         }
-        /*
-        XElement? el = Vector3Data.XmlElement?.Element("POSITION")?.Element(textField.ReturnCommandParameter.ToString());
+
+        XElement? el = XElementValue?.Element("POSITION")?.Element(textField.ReturnCommandParameter.ToString());
         if (el == null)
         {
             Debug.WriteLine($"Element for {textField.ReturnCommandParameter} not found.");
             return;
         }
-
-        Debug.WriteLine($"Adding field link for {Vector3Data.XmlElement?.BaseUri}.{textField.ReturnCommandParameter}.");
-
-        XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);*/
+        XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
     }
 }

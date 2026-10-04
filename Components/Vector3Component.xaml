@@ -3,12 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"     
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-             x:Class="GHVRQ_Save_Manager.Components.Vector3Component"
-             xmlns:data="clr-namespace:GHVRQ_Save_Manager.Data"
-             x:Name="Vector3Comp">
+             x:Class="GHVRQ_Save_Manager.Components.Vector3InputComponent"
+             x:Name="Vector3Input">
     <VerticalStackLayout>
-        <material:TextField Text="{Binding Vector3val.X}" Title="x" ReturnCommandParameter="x" Loaded="AddFieldToList"></material:TextField>
-        <material:TextField Text="{Binding Vector3val.Y}" Title="y" ReturnCommandParameter="y" Loaded="AddFieldToList"></material:TextField>
-        <material:TextField Text="{Binding Vector3val.Z}" Title="z" ReturnCommandParameter="z" Loaded="AddFieldToList"></material:TextField>
+        <material:TextField Title="x" ReturnCommandParameter="x" Loaded="AddFieldToList"></material:TextField>
+        <material:TextField Title="y" ReturnCommandParameter="y" Loaded="AddFieldToList"></material:TextField>
+        <material:TextField Title="z" ReturnCommandParameter="z" Loaded="AddFieldToList"></material:TextField>
     </VerticalStackLayout>
 </ContentView>

@@ -113,26 +113,24 @@ namespace GHVRQ_Save_Manager.XML
 
         public static XElement? AddElementLink(IUniversalFieldData field, XElement element)
         {
-            if (!FieldLinks.ContainsKey(field))
+            if (field is TextFieldData textFieldData)
             {
-                if (field is TextField textField)
+                textFieldData.Field.TextChanged += (sender, e) =>
                 {
-                    textField.TextChanged += (sender, e) =>
-                    {
-                        element.Value = textField.Text;
-                    };
-                    textField.Text = element.Value;
-                }
-                else if (field is CheckBox checkBox)
-                {
-                    checkBox.CheckChanged += (sender, e) =>
-                    {
-                        element.Value = checkBox.IsChecked.ToString();
-                    };
-                    checkBox.IsChecked = bool.Parse(element.Value);
-                }
-                FieldLinks.Add(field, element);
+                    element.Value = textFieldData.Field.Text;
+                };
+
+                field.Value = element.Value;
             }
+            else if (field is ToggleFieldData checkBox)
+            {
+                checkBox.Field.CheckChanged += (sender, e) =>
+                {
+                    element.Value = checkBox.Field.IsChecked.ToString();
+                };
+                checkBox.Field.IsChecked = bool.Parse(element.Value);
+            }
+            FieldLinks.TryAdd(field, element);
 
             return element;
         }
