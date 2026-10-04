@@ -155,20 +155,18 @@ namespace GHVRQ_Save_Manager.XML
                     Object_Id = itemElement.Element("OBJECT_ID")?.Value ?? "",
                     type = Enum.TryParse(itemElement.Element("TYPE")?.Value, out EItemID itemType) ? itemType : EItemID.NONE,
                     position = new System.Numerics.Vector3(
-                        float.Parse(pos?.Attribute("x")?.Value ?? "0"),
-                        float.Parse(pos?.Attribute("y")?.Value ?? "0"),
-                        float.Parse(pos?.Attribute("z")?.Value ?? "0")
+                        Single.TryParse(pos?.Element("x")?.Value.Replace(".", ",") ?? "0", out float x) ? x : 0,
+                        Single.TryParse(pos?.Element("y")?.Value.Replace(".", ",") ?? "0", out float y) ? y : 0,
+                        Single.TryParse(pos?.Element("z")?.Value.Replace(".", ",") ?? "0", out float z) ? z : 0
                     ),
                     rotation = new Data.math.Rotation
                     {
-                        x = float.Parse(rot?.Attribute("x")?.Value ?? "0"),
-                        y = float.Parse(rot?.Attribute("y")?.Value ?? "0"),
-                        z = float.Parse(rot?.Attribute("z")?.Value ?? "0"),
-                        w = float.Parse(rot?.Attribute("w")?.Value ?? "1")
+                        x = Single.TryParse(rot?.Element("x")?.Value.Replace(".", ",") ?? "0", out float rx) ? rx : 0,
+                        y = Single.TryParse(rot?.Element("y")?.Value.Replace(".", ",") ?? "0", out float ry) ? ry : 0,
+                        z = Single.TryParse(rot?.Element("z")?.Value.Replace(".", ",") ?? "0", out float rz) ? rz : 0,
+                        w = Single.TryParse(rot?.Element("w")?.Value.Replace(".", ",") ?? "1", out float rw) ? rw : 1
                     }
                 };
-
-                Debug.WriteLine($"Loaded GHVRObject: ID={obj.Object_Id}, Type={obj.type}, Position=({obj.position.X}, {obj.position.Y}, {obj.position.Z}), Rotation=({obj.rotation.x}, {obj.rotation.y}, {obj.rotation.z}, {obj.rotation.w})");
 
                 objects.Add(obj);
             }
