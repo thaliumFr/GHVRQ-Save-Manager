@@ -121,12 +121,37 @@ namespace GHVRQ_Save_Manager.XML
             return AddElementLink(field, element);
         }
 
+        static List<BackpackObject> GetAllObjectsInBackpack()
+        {
+            List<BackpackObject> objects = [];
+            XElement? itemsElement = GetCategoryElement(Category.Items)?.Element("BACKPACK_OBJECTS_LIST");
+
+            if (itemsElement == null) return [];
+
+            foreach (XElement itemElement in itemsElement.Elements("BACKPACK_OBJECT"))
+            {
+                BackpackObject obj = new()
+                {
+                    XMLElement = itemElement,
+                    Object_Id = itemElement.Element("OBJECT_ID")?.Value ?? "",
+                    category = Enum.TryParse(itemElement.Element("CATEGORY")?.Value, out BackpackObject.Category category) ? category : BackpackObject.Category.None,
+                    page = int.TryParse(itemElement.Element("PAGE")?.Value, out int page) ? page : 0,
+                    slot = int.TryParse(itemElement.Element("SLOT")?.Value, out int slot) ? slot : 0
+                };
+                objects.Add(obj);
+            }
+
+            return objects;
+        }
+
         public static List<GHVRObject> GetAllGHVRObjects()
         {
             List<GHVRObject> objects = [];
             XElement? itemsElement = GetCategoryElement(Category.Items)?.Element("OBJECTS_LIST");
 
             if (itemsElement == null) return [];
+
+            List<BackpackObject> backpackObjects = GetAllObjectsInBackpack();
 
             foreach (XElement itemElement in itemsElement.Elements("OBJECT"))
             {
@@ -137,13 +162,13 @@ namespace GHVRQ_Save_Manager.XML
                 {
                     XMLElement = itemElement,
                     Object_Id = itemElement.Element("OBJECT_ID")?.Value ?? "",
-                    type = Enum.TryParse(itemElement.Element("TYPE")?.Value, out EItemID itemType) ? itemType : EItemID.NONE,
-                    position = new System.Numerics.Vector3(
+                    ItemID = Enum.TryParse(itemElement.Element("TYPE")?.Value, out EItemID itemType) ? itemType : EItemID.NONE,
+                    Position = new System.Numerics.Vector3(
                         Single.TryParse(pos?.Element("x")?.Value.Replace(".", ",") ?? "0", out float x) ? x : 0,
                         Single.TryParse(pos?.Element("y")?.Value.Replace(".", ",") ?? "0", out float y) ? y : 0,
                         Single.TryParse(pos?.Element("z")?.Value.Replace(".", ",") ?? "0", out float z) ? z : 0
                     ),
-                    rotation = new Data.math.Rotation
+                    Rotation = new Data.math.Rotation
                     {
                         x = Single.TryParse(rot?.Element("x")?.Value.Replace(".", ",") ?? "0", out float rx) ? rx : 0,
                         y = Single.TryParse(rot?.Element("y")?.Value.Replace(".", ",") ?? "0", out float ry) ? ry : 0,
@@ -151,6 +176,12 @@ namespace GHVRQ_Save_Manager.XML
                         w = Single.TryParse(rot?.Element("w")?.Value.Replace(".", ",") ?? "1", out float rw) ? rw : 1
                     }
                 };
+
+                BackpackObject? backpackObj = backpackObjects.Find(BObj => BObj.Object_Id == obj.Object_Id);
+                if (backpackObj != null)
+                {
+                    obj.BackpackObject = backpackObj;
+                }
 
                 objects.Add(obj);
             }

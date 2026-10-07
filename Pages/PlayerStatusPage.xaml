@@ -6,6 +6,7 @@
              xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              x:Class="GHVRQ_Save_Manager.Pages.PlayerStatusPage">
+    
     <VerticalStackLayout VerticalOptions="Fill">
         <VerticalStackLayout>
             <Label Text="Position" Margin="0, 15, 0, 5" FontAttributes="Bold"/>

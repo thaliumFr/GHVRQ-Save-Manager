@@ -7,6 +7,8 @@ namespace GHVRQ_Save_Manager.Pages;
 
 public partial class ItemsPage : ContentView
 {
+    private static ItemsPage instance;
+
     static List<GHVRObject> objects = [];
     static List<GHVRObject> filteredObjects = [];
 
@@ -16,6 +18,9 @@ public partial class ItemsPage : ContentView
 
     public ItemsPage()
 	{
+        instance = this;
+
+
         ObjectsToDisplay = [];
 		InitializeComponent();
 
@@ -36,6 +41,12 @@ public partial class ItemsPage : ContentView
         filteredObjects = objects;
 
         OnUpdateObjectsCollection?.Invoke(null, new());
+    }
+
+    public static void UpdateObject(GHVRObject obj)
+    {
+        GHVRObject oldObj = instance.ObjectsToDisplay.FirstOrDefault(old => old.Object_Id == obj.Object_Id);
+        instance.ObjectsToDisplay[instance.ObjectsToDisplay.IndexOf(oldObj)] = obj;
     }
 
 
@@ -59,7 +70,7 @@ public partial class ItemsPage : ContentView
         }
         else
         {
-            filteredObjects = objects.Where(o => o.type.ToString().Contains(searchBar.Text.ToUpper())).ToList();
+            filteredObjects = objects.Where(o => o.ItemID.ToString().Contains(searchBar.Text.ToUpper())).ToList();
         }
         Debug.WriteLine($"Found {filteredObjects.Count} with filter");
         UpdateObjectsToDisplay();
