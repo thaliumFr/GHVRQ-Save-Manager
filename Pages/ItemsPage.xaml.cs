@@ -60,7 +60,7 @@ public partial class ItemsPage : ContentView
         Debug.WriteLine($"found {ObjectsToDisplay.Count} objects");
     }
 
-    private void FilterSearchBar(string text, bool OnlyInBackpack = false)
+    private void FilterSearchBar(string text, bool OnlyInBackpack = false, bool OnlyInHolsters = false)
     {
         if (String.IsNullOrEmpty(text)) filteredObjects = objects;
         else if (int.TryParse(text.Trim(), out int result))
@@ -76,6 +76,7 @@ public partial class ItemsPage : ContentView
         
         
         if (OnlyInBackpack) filteredObjects = filteredObjects.Where(o => o.IsInBackpack).ToList();
+        if (OnlyInHolsters) filteredObjects = filteredObjects.Where(o => o.IsInHolster).ToList();
 
         Debug.WriteLine($"Found {filteredObjects.Count} with filter");
         UpdateObjectsToDisplay();
@@ -83,16 +84,21 @@ public partial class ItemsPage : ContentView
 
     private void ItemSearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
-        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked);
+        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked, IsInHToggle.IsChecked);
     }
 
     private void ItemSearchBar_Search(object sender, EventArgs e)
     {
-        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked);
+        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked, IsInHToggle.IsChecked);
     }
 
     private void IsInBPToggle_CheckChanged(object sender, EventArgs e)
     {
-        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked);
+        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked, IsInHToggle.IsChecked);
+    }
+
+    private void IsInHToggle_CheckChanged(object sender, EventArgs e)
+    {
+        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked, IsInHToggle.IsChecked);
     }
 }

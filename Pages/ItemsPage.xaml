@@ -10,6 +10,7 @@
         <SearchBar Placeholder="Search" x:Name="ItemSearchBar" SearchButtonPressed="ItemSearchBar_Search"/>
         <HorizontalStackLayout Margin="0, 20, 0, 10">
             <material:CheckBox Text="In Backpack" x:Name="IsInBPToggle" CheckChanged="IsInBPToggle_CheckChanged"/>
+            <material:CheckBox Text="In Holsters" x:Name="IsInHToggle" CheckChanged="IsInHToggle_CheckChanged"/>
         </HorizontalStackLayout>
 
         <CollectionView x:Name="ItemsCollectionView" ItemsUpdatingScrollMode="KeepScrollOffset" VerticalOptions="Fill" ItemSizingStrategy="MeasureFirstItem"  VerticalScrollBarVisibility="Always" HorizontalOptions="Fill" Margin="0, 10, 20, 0" SelectionMode="None" >

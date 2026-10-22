@@ -60,6 +60,19 @@ namespace GHVRQ_Save_Manager.Data
 
         public bool IsInBackpack { get => backpackObject != null;  }
 
+        private HolsterObject? holsterObject;
+        public HolsterObject? HolsterObject
+        {
+            get => holsterObject;
+            set
+            {
+                SetProperty(ref holsterObject, value);
+                OnPropertyChanged(nameof(IsInHolster));
+            }
+        }
+
+        public bool IsInHolster { get => holsterObject != null; }
+
 
 
         public void RemoveFromBackpack()
@@ -112,6 +125,18 @@ namespace GHVRQ_Save_Manager.Data
         public int slot { get; set; }
         public string Object_Id { get; set; }
 
+        public XElement? XMLElement { get; set; }
+    }
+
+    public class HolsterObject
+    {
+        public enum SlotType
+        {
+            LEFT,
+            RIGHT,
+        }
+        public SlotType slot { get; set; }
+        public string Object_Id { get; set; }
         public XElement? XMLElement { get; set; }
     }
 

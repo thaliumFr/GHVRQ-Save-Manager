@@ -144,6 +144,27 @@ namespace GHVRQ_Save_Manager.XML
             return objects;
         }
 
+        static List<HolsterObject> GetAllObjectsInHolsters()
+        {
+            List<HolsterObject> objects = [];
+            XElement? itemsElement = GetCategoryElement(Category.Items)?.Element("HOLSTERS_LIST");
+
+            if (itemsElement == null) return [];
+
+            foreach (XElement itemElement in itemsElement.Elements("HOLSTERS"))
+            {
+                HolsterObject obj = new()
+                {
+                    XMLElement = itemElement,
+                    Object_Id = itemElement.Element("OBJECT_ID")?.Value ?? "",
+                    slot = Enum.TryParse(itemElement.Element("SLOT")?.Value, out HolsterObject.SlotType slot) ? slot : HolsterObject.SlotType.LEFT
+                };
+                objects.Add(obj);
+            }
+
+            return objects;
+        }
+
         public static List<GHVRObject> GetAllGHVRObjects()
         {
             List<GHVRObject> objects = [];
@@ -152,6 +173,7 @@ namespace GHVRQ_Save_Manager.XML
             if (itemsElement == null) return [];
 
             List<BackpackObject> backpackObjects = GetAllObjectsInBackpack();
+            List<HolsterObject> holsterObjects = GetAllObjectsInHolsters();
 
             foreach (XElement itemElement in itemsElement.Elements("OBJECT"))
             {
@@ -178,9 +200,14 @@ namespace GHVRQ_Save_Manager.XML
                 };
 
                 BackpackObject? backpackObj = backpackObjects.Find(BObj => BObj.Object_Id == obj.Object_Id);
+                HolsterObject? holsterObj = holsterObjects.Find(HObj => HObj.Object_Id == obj.Object_Id);
                 if (backpackObj != null)
                 {
                     obj.BackpackObject = backpackObj;
+                }
+                if (holsterObj != null)
+                {
+                    obj.HolsterObject = holsterObj;
                 }
 
                 objects.Add(obj);
