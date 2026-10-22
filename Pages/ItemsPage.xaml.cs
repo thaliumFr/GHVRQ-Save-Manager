@@ -60,24 +60,39 @@ public partial class ItemsPage : ContentView
         Debug.WriteLine($"found {ObjectsToDisplay.Count} objects");
     }
 
-    private void ItemSearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    private void FilterSearchBar(string text, bool OnlyInBackpack = false)
     {
-        SearchBar searchBar = (SearchBar)sender;
-        if (String.IsNullOrEmpty(searchBar.Text)) filteredObjects = objects;
-        else if (int.TryParse(searchBar.Text, out int result))
+        if (String.IsNullOrEmpty(text)) filteredObjects = objects;
+        else if (int.TryParse(text.Trim(), out int result))
         {
-            filteredObjects = objects.Where(o => o.Object_Id == searchBar.Text).ToList();
+            Debug.WriteLine("Searching with Object ID");
+            filteredObjects = objects.Where(o => o.Object_Id.StartsWith(text.Trim())).ToList();
         }
         else
         {
-            filteredObjects = objects.Where(o => o.ItemID.ToString().Contains(searchBar.Text.ToUpper())).ToList();
+            Debug.WriteLine("Searching with ItemID");
+            filteredObjects = objects.Where(o => o.ItemID.ToString().Contains(text.ToUpper())).ToList();
         }
+        
+        
+        if (OnlyInBackpack) filteredObjects = filteredObjects.Where(o => o.IsInBackpack).ToList();
+
         Debug.WriteLine($"Found {filteredObjects.Count} with filter");
         UpdateObjectsToDisplay();
     }
 
+    private void ItemSearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked);
+    }
+
     private void ItemSearchBar_Search(object sender, EventArgs e)
     {
-        ItemSearchBar_TextChanged(sender, new TextChangedEventArgs(ItemSearchBar.Text, ItemSearchBar.Text));
+        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked);
+    }
+
+    private void IsInBPToggle_CheckChanged(object sender, EventArgs e)
+    {
+        FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked);
     }
 }

@@ -2,12 +2,15 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:models="clr-namespace:GHVRQ_Save_Manager.Data"
+             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui" 
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:components="clr-namespace:GHVRQ_Save_Manager.Components"
              x:Class="GHVRQ_Save_Manager.Pages.ItemsPage">
     <VerticalStackLayout VerticalOptions="Fill" >
-        <Label Text="items Tab"  x:Name="ItemsLabel"/>
         <SearchBar Placeholder="Search" x:Name="ItemSearchBar" SearchButtonPressed="ItemSearchBar_Search"/>
-
+        <HorizontalStackLayout Margin="0, 20, 0, 10">
+            <material:CheckBox Text="In Backpack" x:Name="IsInBPToggle" CheckChanged="IsInBPToggle_CheckChanged"/>
+        </HorizontalStackLayout>
 
         <CollectionView x:Name="ItemsCollectionView" ItemsUpdatingScrollMode="KeepScrollOffset" VerticalOptions="Fill" ItemSizingStrategy="MeasureFirstItem"  VerticalScrollBarVisibility="Always" HorizontalOptions="Fill" Margin="0, 10, 20, 0" SelectionMode="None" >
             <CollectionView.ItemTemplate>

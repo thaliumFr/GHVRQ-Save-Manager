@@ -134,7 +134,7 @@ namespace GHVRQ_Save_Manager.XML
                 {
                     XMLElement = itemElement,
                     Object_Id = itemElement.Element("OBJECT_ID")?.Value ?? "",
-                    category = Enum.TryParse(itemElement.Element("CATEGORY")?.Value, out BackpackObject.Category category) ? category : BackpackObject.Category.None,
+                    category = Enum.TryParse(itemElement.Element("CATEGORY")?.Value, out BackpackObject.Category category) ? category : BackpackObject.Category.BACKPACK_TOOLS,
                     page = int.TryParse(itemElement.Element("PAGE")?.Value, out int page) ? page : 0,
                     slot = int.TryParse(itemElement.Element("SLOT")?.Value, out int slot) ? slot : 0
                 };

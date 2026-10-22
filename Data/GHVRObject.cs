@@ -1,13 +1,7 @@
 ﻿using GHVRQ_Save_Manager.Data.math;
-using GHVRQ_Save_Manager.Pages;
 using GHVRQ_Save_Manager.XML;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Xml.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -60,9 +54,11 @@ namespace GHVRQ_Save_Manager.Data
             get => backpackObject;
             set {
                 SetProperty(ref backpackObject, value);
+                OnPropertyChanged(nameof(IsInBackpack));
             } 
         }
-        public bool IsInBackpack { get { return BackpackObject != null; } }
+
+        public bool IsInBackpack { get => backpackObject != null;  }
 
 
 
@@ -105,7 +101,6 @@ namespace GHVRQ_Save_Manager.Data
     {
         public enum Category
         {
-            None,
             BACKPACK_TOOLS,
             BACKPACK_MATERIALS,
             BACKPACK_FOOD,
