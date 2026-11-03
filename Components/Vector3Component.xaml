@@ -5,9 +5,9 @@
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              x:Class="GHVRQ_Save_Manager.Components.Vector3InputComponent"
              x:Name="Vector3Input">
-    <VerticalStackLayout>
+    <HorizontalStackLayout>
         <material:TextField Title="x" ReturnCommandParameter="x" BorderColor="Transparent" HorizontalOptions="Start" Loaded="AddFieldToList"></material:TextField>
         <material:TextField Title="y" ReturnCommandParameter="y" BorderColor="Transparent" HorizontalOptions="Start" Loaded="AddFieldToList"></material:TextField>
         <material:TextField Title="z" ReturnCommandParameter="z" BorderColor="Transparent" HorizontalOptions="Start" Loaded="AddFieldToList"></material:TextField>
-    </VerticalStackLayout>
+    </HorizontalStackLayout>
 </ContentView>

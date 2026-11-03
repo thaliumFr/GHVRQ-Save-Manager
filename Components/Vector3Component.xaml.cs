@@ -40,20 +40,6 @@ public partial class Vector3InputComponent : ContentView
 
     private void AddFieldToList(object sender, EventArgs e)
     {
-        TextField textField = (TextField)sender;
-        if (String.IsNullOrEmpty(textField.ReturnCommandParameter?.ToString()))
-        {
-            Debug.WriteLine("ReturnCommandParameter is null or empty.");
-            return;
-
-        }
-
-        XElement? el = XElementValue?.Element("POSITION")?.Element(textField.ReturnCommandParameter.ToString());
-        if (el == null)
-        {
-            Debug.WriteLine($"Element for {textField.ReturnCommandParameter} not found.");
-            return;
-        }
-        XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
+        IUniversalInputFieldData.AddToList<TextField, TextFieldData>(sender, XElementValue.Element("POSITION")!);
     }
 }

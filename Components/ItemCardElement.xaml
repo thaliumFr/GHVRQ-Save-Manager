@@ -15,7 +15,7 @@
         <Grid ColumnDefinitions="*, *, *" RowDefinitions="*, *, *" HorizontalOptions="Fill" VerticalOptions="Fill" >
             <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" >Item Name</Label>
             <Label Grid.Row="0" Grid.Column="1" FontAttributes="Bold" >Item UUID</Label>
-            <Label Grid.Row="0" Grid.Column="2" FontAttributes="Bold" >Backpack Data</Label>
+            <Label Grid.Row="0" Grid.Column="2" FontAttributes="Bold" IsVisible="{Binding IsInBackpack}">Backpack Data</Label>
 
 
             <Label Grid.Row="1" Grid.Column="0" Text="{Binding ItemID}" VerticalTextAlignment="Start"/>
@@ -28,8 +28,10 @@
             </Grid>
 
             <VerticalStackLayout Grid.Column="0" Grid.Row="2" Padding="0,15">
-                <Label Grid.Row="0" Grid.Column="2" FontAttributes="Bold" >Position</Label>
+                <Label FontAttributes="Bold" >Position</Label>
                 <components:Vector3InputComponent x:Name="ItemPositionComponent" Vector3val="{Binding Position}" XElementValue="{Binding XMLElement}" Grid.Row="1" Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                <Label FontAttributes="Bold" >Rotation</Label>
+                <components:Vector4InputComponent x:Name="ItemRotationComponent" Vector4val="{Binding Rotation}" XElementValue="{Binding XMLElement}" Grid.Row="1" Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Row="2" Grid.Column="2">

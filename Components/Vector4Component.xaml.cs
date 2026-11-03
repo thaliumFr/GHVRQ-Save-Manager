@@ -7,53 +7,39 @@ using UraniumUI.Material.Controls;
 
 namespace GHVRQ_Save_Manager.Components;
 
-public partial class Vector4Component : ContentView
+public partial class Vector4InputComponent : ContentView
 {
-	public Vector4Component()
+	public Vector4InputComponent()
 	{
 		InitializeComponent();
 	}
 
-    public static readonly BindableProperty XMLElementProperty = BindableProperty.Create(
-        nameof(XMLElement),
+    public static readonly BindableProperty XElementValueProperty = BindableProperty.Create(
+        nameof(XElementValue),
         typeof(XElement),
-        typeof(Vector4Component),
+        typeof(Vector4InputComponent),
         null);
 
-    public XElement XMLElement
+    public XElement XElementValue
     {
-        get => (XElement)GetValue(XMLElementProperty);
-        set => SetValue(XMLElementProperty, value);
+        get => (XElement)GetValue(XElementValueProperty);
+        set => SetValue(XElementValueProperty, value);
     }
 
-    public static readonly BindableProperty vector4Property = BindableProperty.Create(
-        nameof(XMLElement),
+    public static readonly BindableProperty Vector4valProperty = BindableProperty.Create(
+        nameof(Vector4val),
         typeof(Vector4),
-        typeof(Vector4Component),
-        null);
+        typeof(Vector4InputComponent),
+        Vector4.Zero);
 
-    public Vector4 vector4
+    public Vector4 Vector4val
     {
-        get => (Vector4)GetValue(vector4Property);
-        set => SetValue(vector4Property, value);
+        get => (Vector4)GetValue(Vector4valProperty);
+        set => SetValue(Vector4valProperty, value);
     }
 
     private void AddFieldToList(object sender, EventArgs e)
     {
-        TextField textField = (TextField)sender;
-        if (String.IsNullOrEmpty(textField.ReturnCommandParameter?.ToString()))
-        {
-            Debug.WriteLine("ReturnCommandParameter is null or empty.");
-            return;
-        }
-
-        XElement? el = XMLElement.Element("POSITION")?.Element(textField.ReturnCommandParameter.ToString());
-        if (el == null)
-        {
-            Debug.WriteLine($"Element for {textField.ReturnCommandParameter} not found.");
-            return;
-        }
-
-        XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
+        IUniversalInputFieldData.AddToList<TextField, TextFieldData>(sender, XElementValue.Element("ROTATION")!);
     }
 }
