@@ -10,18 +10,10 @@
     <VerticalStackLayout VerticalOptions="Fill">
         <VerticalStackLayout>
             <Label Text="Position" Margin="0, 15, 0, 5" FontAttributes="Bold"/>
-            <HorizontalStackLayout>
-                <material:TextField Title="X" ReturnCommandParameter="playerStatus.PLAYER_POSITION.x" Loaded="AddFieldToList"/>
-                <material:TextField Title="Y" ReturnCommandParameter="playerStatus.PLAYER_POSITION.y" Loaded="AddFieldToList"/>
-                <material:TextField Title="Z" ReturnCommandParameter="playerStatus.PLAYER_POSITION.z" Loaded="AddFieldToList"/>
-            </HorizontalStackLayout>
+            <components:Vector3InputComponent Path="playerStatus.PLAYER_POSITION" x:Name="PlayerPositionComponent"/>
 
             <Label Text="Rotation" Margin="0, 15, 0, 5" FontAttributes="Bold"/>
-            <HorizontalStackLayout>
-                <material:TextField Title="X" ReturnCommandParameter="playerStatus.PLAYER_ROTATION.x" Loaded="AddFieldToList"/>
-                <material:TextField Title="Y" ReturnCommandParameter="playerStatus.PLAYER_ROTATION.y" Loaded="AddFieldToList"/>
-                <material:TextField Title="Z" ReturnCommandParameter="playerStatus.PLAYER_ROTATION.z" Loaded="AddFieldToList"/>
-            </HorizontalStackLayout>
+            <components:Vector4InputComponent Path="playerStatus.PLAYER_ROTATION" x:Name="PlayerRotationComponent"/>
         </VerticalStackLayout>
 
         <FlexLayout JustifyContent="Start" Margin="0,50" Direction="Row" FlowDirection="LeftToRight" HorizontalOptions="Fill" Wrap="Wrap">

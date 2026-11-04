@@ -33,6 +33,27 @@ namespace GHVRQ_Save_Manager.Data
 
             XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
         }
+
+        public static void AddToList<T, U>(object sender, string path) where U : IUniversalInputFieldData
+        {
+            XElement XMLElement = XMLReaderSystem.GetElementFromPath(path);
+
+            TextField textField = (TextField)sender;
+            if (String.IsNullOrEmpty(textField.ReturnCommandParameter?.ToString()))
+            {
+                Debug.WriteLine("ReturnCommandParameter is null or empty.");
+                return;
+            }
+
+            XElement? el = XMLElement.Element(textField.ReturnCommandParameter.ToString());
+            if (el == null)
+            {
+                Debug.WriteLine($"Element for {textField.ReturnCommandParameter} not found.");
+                return;
+            }
+
+            XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
+        }
     }
 
     public interface IUniversalInputFieldData<TField, TValue> : IUniversalInputFieldData

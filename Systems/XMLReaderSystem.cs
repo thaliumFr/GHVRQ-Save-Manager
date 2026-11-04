@@ -106,19 +106,21 @@ namespace GHVRQ_Save_Manager.XML
 
         public static XElement? AddElementLink(IUniversalInputFieldData field, string path)
         {
-            XElement? element = CurrentDoc?.Root;
+            return AddElementLink(field, GetElementFromPath(path));
+        }
 
+        public static XElement GetElementFromPath(string path)
+        {
+            XElement element = CurrentDoc?.Root!;
             path.Split(".").ToList().ForEach(name =>
             {
-                element = element?.Element(name);
+                element = element?.Element(name)!;
             });
-
             if (element == null)
             {
                 Debug.WriteLine($"Could not find element with UPS \"{path}\"");
             }
-
-            return AddElementLink(field, element);
+            return element!;
         }
 
         static List<BackpackObject> GetAllObjectsInBackpack()

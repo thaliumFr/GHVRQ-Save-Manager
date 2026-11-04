@@ -26,6 +26,18 @@ public partial class Vector3InputComponent : ContentView
         set => SetValue(XElementValueProperty, value);
     }
 
+    public static readonly BindableProperty PathProperty = BindableProperty.Create(
+    nameof(Path),
+    typeof(string),
+    typeof(Vector4InputComponent),
+    string.Empty);
+
+    public string Path
+    {
+        get => (string)GetValue(PathProperty);
+        set => SetValue(PathProperty, value);
+    }
+
     public static readonly BindableProperty Vector3valProperty = BindableProperty.Create(
         nameof(Vector3val),
         typeof(Vector3),
@@ -40,6 +52,12 @@ public partial class Vector3InputComponent : ContentView
 
     private void AddFieldToList(object sender, EventArgs e)
     {
-        IUniversalInputFieldData.AddToList<TextField, TextFieldData>(sender, XElementValue.Element("POSITION")!);
+        if (XElementValue == null)
+        {
+            Debug.WriteLine("XElementValue is null. Fetching from path: " + Path);
+            XElementValue = XMLReaderSystem.GetElementFromPath(Path)!;
+        }
+
+        IUniversalInputFieldData.AddToList<TextField, TextFieldData>(sender, XElementValue!);
     }
 }

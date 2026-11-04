@@ -145,10 +145,7 @@ namespace GHVRQ_Save_Manager
 
         private void SaveFileDropdown_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "SelectedItem")
-            {
-                return;
-            }
+            if (e.PropertyName != "SelectedItem") return;
 
             Debug.WriteLine($"Selected save file: {SaveFileDropdown.SelectedItem}");
             TabbedView.IsVisible = !String.IsNullOrEmpty(SaveFileDropdown?.SelectedItem?.ToString());
@@ -162,7 +159,7 @@ namespace GHVRQ_Save_Manager
 
             if (TabbedView.IsVisible)
             {
-                SaveFileLoader.NameToPath(SaveFileDropdown.SelectedItem.ToString(), out string fileName, out string filePath);
+                SaveFileLoader.NameToPath(SaveFileDropdown?.SelectedItem?.ToString()!, out string fileName, out string filePath);
                 SaveFilePath = filePath;
                 XMLReaderSystem.Load(filePath);
             }
@@ -205,8 +202,10 @@ namespace GHVRQ_Save_Manager
                 XMLReaderSystem.CurrentDoc.Save(SaveFilePath);
                 Debug.WriteLine("XML Document saved");
             }
-            SaveFileLoader.PushSaveFiles(out var results);
-        }
 
+#if !DEBUG
+            SaveFileLoader.PushSaveFiles(out var results);
+#endif
+        }
     }
 }
