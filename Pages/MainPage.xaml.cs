@@ -145,6 +145,11 @@ namespace GHVRQ_Save_Manager
 
         private void SaveFileDropdown_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (e.PropertyName != "SelectedItem")
+            {
+                return;
+            }
+
             Debug.WriteLine($"Selected save file: {SaveFileDropdown.SelectedItem}");
             TabbedView.IsVisible = !String.IsNullOrEmpty(SaveFileDropdown?.SelectedItem?.ToString());
 
