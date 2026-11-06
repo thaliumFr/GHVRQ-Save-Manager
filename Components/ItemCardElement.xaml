@@ -11,31 +11,31 @@
              xmlns:validation="clr-namespace:UraniumUI.Validations;assembly=UraniumUI.Validations.DataAnnotations"
              x:Name="ItemCard"
              x:DataType="models:GHVRObject">
-    <Border Stroke="{DynamicResource Text}" StrokeShape="RoundRectangle 5" Padding="10" HorizontalOptions="Fill" VerticalOptions="Fill" Margin="0,0,25,0">
-        <Grid ColumnDefinitions="*, *, *" RowDefinitions="*, *, *" HorizontalOptions="Fill" VerticalOptions="Fill" >
-            <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" >Item Name</Label>
-            <Label Grid.Row="0" Grid.Column="1" FontAttributes="Bold" >Item UUID</Label>
-            <Label Grid.Row="0" Grid.Column="2" FontAttributes="Bold" IsVisible="{Binding IsInBackpack}">Backpack Data</Label>
+    <Border Stroke="{DynamicResource Text}" StrokeShape="RoundRectangle 3" Padding="10" HorizontalOptions="Fill" VerticalOptions="Fill" Margin="0,5,25,5">
+        <Grid ColumnDefinitions="*, *, 300" RowDefinitions="20, *, 20, *" RowSpacing="20" ColumnSpacing="40" HorizontalOptions="Fill" VerticalOptions="Fill" >
+            <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" >Item Data</Label>
+            <Label Grid.Row="0" Grid.Column="1" FontAttributes="Bold" >Backpack</Label>
+            <Label Grid.Row="0" Grid.Column="2" FontAttributes="Bold" >Actions</Label>
+            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" FontAttributes="Bold" >Components</Label>
 
-
-            <Label Grid.Row="1" Grid.Column="0" Text="{Binding ItemID}" VerticalTextAlignment="Start"/>
-            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Object_Id}" VerticalTextAlignment="Start"/>
-            
-            <Grid x:Name="BackpackGrid" Grid.Column="2" Grid.Row="1" ColumnDefinitions="auto, *" RowDefinitions="auto, *, *, *" ColumnSpacing="10" IsVisible="{Binding IsInBackpack}" >
-                <uranium:Dropdown x:Name="ItemCatDropdown" SelectedItem="{Binding BackpackObject.category}" BorderWidth="3" Grid.Row="0" Grid.Column="0" PropertyChanged="ItemCatDropdown_PropertyChanged"/>
-                <material:TextField x:Name="PageTextField" Title="Page" Text="{Binding BackpackObject.page}" Keyboard="Numeric" Grid.Row="1" Grid.Column="0" TextChanged="PageTextField_TextChanged"/>
-                <material:TextField x:Name="SlotTextField" Title="Slot" Text="{Binding BackpackObject.slot}" Keyboard="Numeric" Grid.Row="2" Grid.Column="0" TextChanged="SlotTextField_TextChanged"/>
-            </Grid>
-
-            <VerticalStackLayout Grid.Column="0" Grid.Row="2" Padding="0,15">
+            <VerticalStackLayout Grid.Row="1" Grid.Column="0">
+                <material:DropdownField x:Name="ItemIDDropdown" Title="Item ID" SelectedItem="{Binding ItemID}" PropertyChanged="ItemIDDropdown_PropertyChanged"/>
+                <Label FontAttributes="Bold" Margin="0,20,0,0">ItemID</Label>
+                <Label Text="{Binding Object_Id}" VerticalTextAlignment="Start" Margin="0,10,0,20"/>
                 <Label FontAttributes="Bold" >Position</Label>
                 <components:Vector3InputComponent x:Name="ItemPositionComponent" Vector3val="{Binding Position}" Path="POSITION" XElementValue="{Binding XMLElement}" Grid.Row="1" Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
                 <Label FontAttributes="Bold" >Rotation</Label>
                 <components:Vector4InputComponent x:Name="ItemRotationComponent" Vector4val="{Binding Rotation}" Path="ROTATION" XElementValue="{Binding XMLElement}" Grid.Row="1" Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
             </VerticalStackLayout>
 
-            <VerticalStackLayout Grid.Row="2" Grid.Column="2">
-                <Button x:Name="BackpackButton" Text="Add to backpack" ImageSource="backpack_icon.png" BackgroundColor="Green" HorizontalOptions="Center" VerticalOptions="Center" CommandParameter="{Binding Object_Id}" Clicked="BackpackButton_Clicked">
+            <VerticalStackLayout x:Name="BackpackGrid" Grid.Column="1" Grid.Row="1" IsVisible="{Binding IsInBackpack}" >
+                <uranium:Dropdown x:Name="ItemCatDropdown" SelectedItem="{Binding BackpackObject.category}" BorderWidth="3" Grid.Row="0" Grid.Column="0" PropertyChanged="ItemCatDropdown_PropertyChanged"/>
+                <material:TextField x:Name="PageTextField" Title="Page" Text="{Binding BackpackObject.page}" Keyboard="Numeric" Grid.Row="1" Grid.Column="0" TextChanged="PageTextField_TextChanged"/>
+                <material:TextField x:Name="SlotTextField" Title="Slot" Text="{Binding BackpackObject.slot}" Keyboard="Numeric" Grid.Row="2" Grid.Column="0" TextChanged="SlotTextField_TextChanged"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" HorizontalOptions="Start">
+                <Button x:Name="BackpackButton" Text="Add to backpack" ImageSource="backpack_icon.png" BackgroundColor="Green" Margin="0,0,0,10" CommandParameter="{Binding Object_Id}" Clicked="BackpackButton_Clicked">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding IsInBackpack}" Value="True">
                             <Setter Property="Text" Value="Remove from backpack"/>
@@ -43,10 +43,15 @@
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
+                <Button x:Name="RemoveFromBackpackButton" Text="Remove from backpack" IsEnabled="False" BackgroundColor="DarkRed" Margin="0,0,0,10" Clicked="RemoveFromBackpackButton_Clicked"/>
             </VerticalStackLayout>
 
+            <ScrollView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalOptions="Fill" VerticalOptions="Fill" MaximumHeightRequest="200">
+                <VerticalStackLayout x:Name="ComponentsStackLayout" HorizontalOptions="Fill" VerticalOptions="Fill">
+                    <Label Text="Components will be displayed here." FontAttributes="Italic"/>
+                </VerticalStackLayout>
+            </ScrollView>
 
-            
         </Grid>
     </Border>
 </ContentView>
