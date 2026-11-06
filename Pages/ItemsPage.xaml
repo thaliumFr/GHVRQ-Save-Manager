@@ -20,5 +20,9 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <AbsoluteLayout>
+            <BoxView AbsoluteLayout.LayoutBounds="0, 0, 100, 100" AbsoluteLayout.LayoutFlags="PositionProportional" BackgroundColor="LightGray"/>
+        </AbsoluteLayout>
     </VerticalStackLayout>
 </ContentView>

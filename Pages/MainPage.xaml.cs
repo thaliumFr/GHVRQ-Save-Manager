@@ -22,7 +22,7 @@ namespace GHVRQ_Save_Manager
         private string SaveFilePath = "";
 
         static int HeaderHeight = 200;
-        static int SearchBarheight = 60;
+        static int SearchBarheight = 100;
 
         public MainPage()
         {
