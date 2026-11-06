@@ -52,12 +52,20 @@ public partial class Vector4InputComponent : ContentView
 
     private void AddFieldToList(object sender, EventArgs e)
     {
-        if(XElementValue == null)
+        if (XElementValue == null)
         {
+            
             Debug.WriteLine("XElementValue is null. Fetching from path: " + Path);
             XElementValue = XMLReaderSystem.GetElementFromPath(Path)!;
         }
 
-        IUniversalInputFieldData.AddToList<TextField, TextFieldData>(sender, XElementValue!);
+        if (Path == "POSITION" || Path == "ROTATION")
+        {
+            IUniversalInputFieldData.AddToList(sender, XElementValue.Element(Path)!);
+            return;
+        }
+
+        IUniversalInputFieldData.AddToList(sender, XElementValue!);
+        
     }
 }

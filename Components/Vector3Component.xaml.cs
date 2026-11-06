@@ -58,6 +58,14 @@ public partial class Vector3InputComponent : ContentView
             XElementValue = XMLReaderSystem.GetElementFromPath(Path)!;
         }
 
-        IUniversalInputFieldData.AddToList<TextField, TextFieldData>(sender, XElementValue!);
+        if (Path == "POSITION" || Path == "ROTATION")
+        {
+            IUniversalInputFieldData.AddToList(sender, XElementValue.Element(Path)!);
+            return;
+        }
+        
+        IUniversalInputFieldData.AddToList(sender, XElementValue!);
+
+
     }
 }

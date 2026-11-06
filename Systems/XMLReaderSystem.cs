@@ -12,19 +12,11 @@ namespace GHVRQ_Save_Manager.XML
 
         public static event EventHandler? OnXMLDocumentLoaded;
 
-        public static Dictionary<IUniversalInputFieldData, XElement> FieldLinks = [];
-
         public static ref XDocument? Load(string xmlFilePath)
         {
             if (String.IsNullOrEmpty(xmlFilePath) || !File.Exists(xmlFilePath)) return ref CurrentDoc;
 
             CurrentDoc = XDocument.Load(xmlFilePath);
-
-            FieldLinks.Clear();
-            foreach (var (field, path) in MainPage.InputFieldPathDict)
-            {
-                AddElementLink(field, path);
-            }
 
             OnXMLDocumentLoaded?.Invoke(null, EventArgs.Empty);
             return ref CurrentDoc;
@@ -33,12 +25,6 @@ namespace GHVRQ_Save_Manager.XML
         public static ref XDocument? LoadFromString(string xmlString)
         {
             CurrentDoc = XDocument.Parse(xmlString);
-
-            FieldLinks.Clear();
-            foreach (var (textField, path) in MainPage.InputFieldPathDict)
-            {
-                AddElementLink(textField, path);
-            }
 
             OnXMLDocumentLoaded?.Invoke(null, EventArgs.Empty);
             return ref CurrentDoc;
@@ -88,7 +74,7 @@ namespace GHVRQ_Save_Manager.XML
                     element.Value = textFieldData.Field.Text;
                 };
 
-                Debug.WriteLine(element);
+                Debug.WriteLine($"Text element: {element.Value}");
                 field.Value = element.Value;
             }
             else if (field is ToggleFieldData checkBox)
@@ -98,8 +84,10 @@ namespace GHVRQ_Save_Manager.XML
                     element.Value = checkBox.Field.IsChecked.ToString();
                 };
                 checkBox.Field.IsChecked = bool.Parse(element.Value);
+
+                Debug.WriteLine($"Toggled element: {element.Value}");
             }
-            FieldLinks.TryAdd(field, element);
+            MainPage.FieldLinks.TryAdd(field, element);
 
             return element;
         }

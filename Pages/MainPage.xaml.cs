@@ -4,6 +4,7 @@ using GHVRQ_Save_Manager.Systems;
 using GHVRQ_Save_Manager.XML;
 using MvvmHelpers;
 using System.Diagnostics;
+using System.Xml.Linq;
 using UraniumUI.Material.Controls;
 using UraniumUI.Pages;
 using CheckBox = UraniumUI.Material.Controls.CheckBox;
@@ -15,8 +16,7 @@ namespace GHVRQ_Save_Manager
 
         public static event EventHandler<bool>? OnQuestDetected;
         public static bool IsQuestDetected;
-
-        public static Dictionary<IUniversalInputFieldData, string> InputFieldPathDict = [];
+        public static Dictionary<IUniversalInputFieldData, XElement> FieldLinks = [];
 
 
         private string SaveFilePath = "";
@@ -26,7 +26,6 @@ namespace GHVRQ_Save_Manager
 
         public MainPage()
         {
-            InputFieldPathDict = [];
             InitializeComponent();
 
             // Setting up event handlers
@@ -169,29 +168,15 @@ namespace GHVRQ_Save_Manager
         {
             object field = sender;
 
+            
+
             if (field is CheckBox checkBox)
             {
-                ToggleFieldData toggleFieldData = new ()
-                {
-                    Field = checkBox
-                };
-
-                if (!InputFieldPathDict.ContainsKey(toggleFieldData) && !String.IsNullOrEmpty($"{checkBox.CommandParameter}"))
-                {
-                    InputFieldPathDict.Add(toggleFieldData, $"{checkBox.CommandParameter}");
-                }
+                IUniversalInputFieldData.AddToList(sender, checkBox.CommandParameter?.ToString());
             }
             else if (field is TextField textField)
             {
-                TextFieldData textFieldData = new ()
-                {
-                    Field = textField
-                };
-
-                if (!InputFieldPathDict.ContainsKey(textFieldData) && !String.IsNullOrEmpty($"{textField.ReturnCommandParameter}"))
-                {
-                    InputFieldPathDict.Add(textFieldData, $"{textField.ReturnCommandParameter}");
-                }
+                IUniversalInputFieldData.AddToList(sender, textField.ReturnCommandParameter?.ToString());
             }
         }
 

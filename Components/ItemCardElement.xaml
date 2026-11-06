@@ -29,9 +29,9 @@
 
             <VerticalStackLayout Grid.Column="0" Grid.Row="2" Padding="0,15">
                 <Label FontAttributes="Bold" >Position</Label>
-                <components:Vector3InputComponent x:Name="ItemPositionComponent" Vector3val="{Binding Position}" XElementValue="{Binding XMLElement}" Grid.Row="1" Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                <components:Vector3InputComponent x:Name="ItemPositionComponent" Vector3val="{Binding Position}" Path="POSITION" XElementValue="{Binding XMLElement}" Grid.Row="1" Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
                 <Label FontAttributes="Bold" >Rotation</Label>
-                <components:Vector4InputComponent x:Name="ItemRotationComponent" Vector4val="{Binding Rotation}" XElementValue="{Binding XMLElement}" Grid.Row="1" Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                <components:Vector4InputComponent x:Name="ItemRotationComponent" Vector4val="{Binding Rotation}" Path="ROTATION" XElementValue="{Binding XMLElement}" Grid.Row="1" Grid.Column="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Row="2" Grid.Column="2">

@@ -13,5 +13,6 @@ public partial class PlayerStatusPage : ContentView
     public static void AddFieldToList(object sender, EventArgs e)
     {
         MainPage.AddFieldToList(sender, e);
+        Debug.WriteLine($"Added {sender}");
     }
 }

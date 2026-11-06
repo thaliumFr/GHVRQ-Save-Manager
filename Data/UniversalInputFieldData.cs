@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Numerics;
 
 using CheckBox = UraniumUI.Material.Controls.CheckBox;
+using Microsoft.UI.Xaml.Controls;
 
 namespace GHVRQ_Save_Manager.Data
 {
@@ -15,44 +16,71 @@ namespace GHVRQ_Save_Manager.Data
         object Field { get; set; }
         object Value { get; set; }
 
-        public static void AddToList<T, U>(object sender, XElement XMLElement) where U : IUniversalInputFieldData
+        public static void AddToList(TextField textField, XElement XMLElement)
         {
-            TextField textField = (TextField)sender;
             if (String.IsNullOrEmpty(textField.ReturnCommandParameter?.ToString()))
             {
                 Debug.WriteLine("ReturnCommandParameter is null or empty.");
                 return;
             }
 
-            XElement? el = XMLElement.Element(textField.ReturnCommandParameter.ToString());
-            if (el == null)
+            XElement? el = XMLElement;
+
+            if (!(bool)textField.ReturnCommandParameter.ToString()?.Contains(XMLElement.Name.LocalName))
             {
-                Debug.WriteLine($"Element for {textField.ReturnCommandParameter} not found.");
-                return;
+                el = XMLElement.Element(textField.ReturnCommandParameter.ToString());
+                if (el == null)
+                {
+                    Debug.WriteLine($"Element for {XMLElement.Name}.{textField.ReturnCommandParameter} not found.");
+                    return;
+                }
             }
 
             XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
         }
 
-        public static void AddToList<T, U>(object sender, string path) where U : IUniversalInputFieldData
+        public static void AddToList(CheckBox checkBox, XElement XMLElement)
         {
-            XElement XMLElement = XMLReaderSystem.GetElementFromPath(path);
-
-            TextField textField = (TextField)sender;
-            if (String.IsNullOrEmpty(textField.ReturnCommandParameter?.ToString()))
+            if (String.IsNullOrEmpty(checkBox.CommandParameter?.ToString()))
             {
                 Debug.WriteLine("ReturnCommandParameter is null or empty.");
                 return;
             }
 
-            XElement? el = XMLElement.Element(textField.ReturnCommandParameter.ToString());
-            if (el == null)
+            XElement? el = XMLElement;
+            if (!(bool)checkBox.CommandParameter.ToString()?.Contains(XMLElement.Name.LocalName))
             {
-                Debug.WriteLine($"Element for {textField.ReturnCommandParameter} not found.");
-                return;
+                el = XMLElement.Element(checkBox.CommandParameter?.ToString());
+                if (el == null)
+                {
+                    Debug.WriteLine($"Element for {XMLElement.Name}.{checkBox.CommandParameter} not found.");
+                    return;
+                }
             }
 
-            XMLReaderSystem.AddElementLink(new TextFieldData() { Field = textField }, el);
+            XMLReaderSystem.AddElementLink(new ToggleFieldData() { Field = checkBox }, el);
+        }
+
+        public static void AddToList(object sender, XElement XMLElement)
+        {
+            if (sender is TextField textField)
+            {
+                AddToList(textField, XMLElement);
+            }
+            else if (sender is CheckBox checkBox)
+            {
+                AddToList(checkBox, XMLElement);
+            }
+            else
+            {
+                Debug.WriteLine($"Unsupported sender type: {sender.GetType().Name}");
+            }
+        }
+
+        public static void AddToList(object sender, string path)
+        {
+            XElement XMLElement = XMLReaderSystem.GetElementFromPath(path);
+            AddToList(sender, XMLElement);
         }
     }
 
