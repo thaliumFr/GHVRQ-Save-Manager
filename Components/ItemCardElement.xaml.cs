@@ -68,17 +68,12 @@ public partial class ItemCardComponent : ContentView
         }
     }
 
-    private void RemoveFromBackpackButton_Clicked(object sender, EventArgs e)
-    {
-
-    }
-
-    private void DropdownField_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-
-    }
-
     private void ItemIDDropdown_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+
+    }
+
+    private void DeleteButton_Clicked(object sender, EventArgs e)
     {
 
     }

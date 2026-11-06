@@ -43,7 +43,7 @@
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <Button x:Name="RemoveFromBackpackButton" Text="Remove from backpack" IsEnabled="False" BackgroundColor="DarkRed" Margin="0,0,0,10" Clicked="RemoveFromBackpackButton_Clicked"/>
+                <Button x:Name="DeleteButton" Text="Delete Object" IsEnabled="False" BackgroundColor="DarkRed" Margin="0,0,0,10" Clicked="DeleteButton_Clicked"/>
             </VerticalStackLayout>
 
             <ScrollView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalOptions="Fill" VerticalOptions="Fill" MaximumHeightRequest="200">
