@@ -13,7 +13,7 @@ namespace GHVRQ_Save_Manager
 {
     public partial class MainPage : UraniumContentPage
     {
-
+        private static MainPage? _instance;
         public static event EventHandler<bool>? OnQuestDetected;
         public static bool IsQuestDetected;
         public static Dictionary<IUniversalInputFieldData, XElement> FieldLinks = [];
@@ -24,8 +24,24 @@ namespace GHVRQ_Save_Manager
         static int HeaderHeight = 200;
         static int SearchBarheight = 100;
 
+        public BindableProperty IsAlertDialogVisibleProperty = BindableProperty.Create(
+            nameof(IsAlertDialogVisible),
+            typeof(bool),
+            typeof(MainPage),
+            false);
+        public bool IsAlertDialogVisible { get => (bool)GetValue(IsAlertDialogVisibleProperty); set => SetValue(IsAlertDialogVisibleProperty, value); }
+
+        public BindableProperty AlertDialogTitleProperty = BindableProperty.Create(
+            nameof(IsAlertDialogVisible),
+            typeof(string),
+            typeof(MainPage),
+            string.Empty);
+        public string AlertDialogTitle { get => (string)GetValue(AlertDialogTitleProperty); set => SetValue(AlertDialogTitleProperty, value); }
+
         public MainPage()
         {
+            BindingContext = this;
+            _instance = this;
             InitializeComponent();
 
             // Setting up event handlers
@@ -100,6 +116,14 @@ namespace GHVRQ_Save_Manager
                     MapScrollView.MaximumHeightRequest = GetDesiredElementHeight(Height, false);
                 }
             };
+        }
+
+        public static void ShowAlertDialog(string title)
+        {
+            _instance.AlertDialogTitle = title;
+            _instance.IsAlertDialogVisible = true;
+            Debug.WriteLine($"Alert dialog shown with title: {title}");
+
         }
 
         public static double GetDesiredElementHeight(double height,bool withSearchBar = false)
@@ -191,6 +215,12 @@ namespace GHVRQ_Save_Manager
 #if !DEBUG
             SaveFileLoader.PushSaveFiles(out var results);
 #endif
+        }
+
+        private void CancelButton_Clicked(object sender, EventArgs e)
+        {
+            AlertDialogTitle = "";
+            IsAlertDialogVisible = false;
         }
     }
 }

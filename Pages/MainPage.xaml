@@ -8,60 +8,65 @@
              xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:pages="clr-namespace:GHVRQ_Save_Manager.Pages"
-             x:Class="GHVRQ_Save_Manager.MainPage">
-    
-    <VerticalStackLayout
-        Spacing="25"
-        Padding="15,30"
-        VerticalOptions="Fill"
-        HorizontalOptions="Fill">
+             x:Class="GHVRQ_Save_Manager.MainPage"
+             x:DataType="local:MainPage">
 
-        <FlexLayout JustifyContent="SpaceBetween" Direction="Row" FlowDirection="RightToLeft" HorizontalOptions="Fill">
-            <HorizontalStackLayout>
-                <uranium:Dropdown x:Name="SaveFileDropdown" Placeholder="Choose" HorizontalTextAlignment="End" PropertyChanged="SaveFileDropdown_PropertyChanged"/>
-                <Button x:Name="SaveButton" StyleClass="FilledTonalButton" Text="Save to device" BackgroundColor="{StaticResource Magenta}" Clicked="SaveButton_Clicked"></Button>
-            </HorizontalStackLayout>
-            <Label x:Name="OutputLabel" HorizontalTextAlignment="End"  />
-        </FlexLayout>
+    <Grid>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="0,30">
 
-        <material:TabView x:Name="TabbedView" IsVisible="False" VerticalOptions="Fill">
-            <material:TabItem Title="Player Status" >
-                <ScrollView x:Name="PlayerStatusScrollView" Padding="50" Orientation="Vertical" VerticalOptions="Fill">
-                    <pages:PlayerStatusPage x:Name="PlayerStatusPage"/>
-                </ScrollView>
-            </material:TabItem>
+            <FlexLayout JustifyContent="SpaceBetween" Direction="Row" FlowDirection="RightToLeft" HorizontalOptions="Fill">
+                <HorizontalStackLayout>
+                    <uranium:Dropdown x:Name="SaveFileDropdown" Placeholder="Choose" HorizontalTextAlignment="End" PropertyChanged="SaveFileDropdown_PropertyChanged"/>
+                    <Button x:Name="SaveButton" StyleClass="FilledTonalButton" Text="Save to device" BackgroundColor="{StaticResource Magenta}" Clicked="SaveButton_Clicked"></Button>
+                </HorizontalStackLayout>
+                <Label x:Name="OutputLabel" HorizontalTextAlignment="End"  />
+            </FlexLayout>
 
-            <material:TabItem Title="Player Injury">
-                <material:TabItem.ContentTemplate>
-                    <DataTemplate>
-                        <VerticalStackLayout>
-                            <Label Text="Player Injury Tab" />
+            <material:TabView x:Name="TabbedView" IsVisible="False" VerticalOptions="Start">
+                <material:TabItem Title="Player Status" >
+                    <ScrollView x:Name="PlayerStatusScrollView" Padding="50" Orientation="Vertical" VerticalOptions="Start">
+                        <pages:PlayerStatusPage x:Name="PlayerStatusPage"/>
+                    </ScrollView>
+                </material:TabItem>
+
+                <material:TabItem Title="Player Injury">
+                    <material:TabItem.ContentTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout>
+                                <Label Text="Player Injury Tab" />
                     
-                        </VerticalStackLayout>
-                    </DataTemplate>
-                </material:TabItem.ContentTemplate>
-            </material:TabItem>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </material:TabItem.ContentTemplate>
+                </material:TabItem>
 
-            <material:TabItem Title="World">
-                <VerticalStackLayout>
-                    <Label Text="World Tab" />
+                <material:TabItem Title="World">
+                    <VerticalStackLayout>
+                        <Label Text="World Tab" />
                     
-                </VerticalStackLayout>
-            </material:TabItem>
+                    </VerticalStackLayout>
+                </material:TabItem>
 
-            <material:TabItem x:Name="ItemsTab" Title="Items" >
-                <pages:ItemsPage x:Name="ItemsPageView" BindingContext="{Binding}"/>
-            </material:TabItem>
+                <material:TabItem x:Name="ItemsTab" Title="Items"  >
+                    <pages:ItemsPage x:Name="ItemsPageView" BindingContext="{Binding}" VerticalOptions="Start"/>
+                </material:TabItem>
             
-            <material:TabItem Title="Notebook">
-                <Label Text="Notebook Tab" />
-            </material:TabItem>
+                <material:TabItem Title="Notebook">
+                    <Label Text="Notebook Tab" />
+                </material:TabItem>
             
-            <material:TabItem Title="Map">
-                <ScrollView VerticalOptions="Fill" VerticalScrollBarVisibility="Always" x:Name="MapScrollView">
-                    <pages:MapPage/>
-                </ScrollView>
-            </material:TabItem>
-        </material:TabView>
-    </VerticalStackLayout>
+                <material:TabItem Title="Map">
+                    <ScrollView VerticalOptions="Fill" VerticalScrollBarVisibility="Always" x:Name="MapScrollView">
+                        <pages:MapPage/>
+                    </ScrollView>
+                </material:TabItem>
+            </material:TabView>
+        </VerticalStackLayout>
+        <VerticalStackLayout x:Name="PopupPanel" IsVisible="{Binding IsAlertDialogVisible}" BackgroundColor="DimGrey">
+            <Label Text="{Binding AlertDialogTitle}" HorizontalOptions="Center" VerticalOptions="Center" FontSize="Large" FontAttributes="Bold"/>
+            <Button x:Name="CancelButton" Clicked="CancelButton_Clicked" Text="Cancel" />
+        </VerticalStackLayout>
+    </Grid>
 </uranium:UraniumContentPage>

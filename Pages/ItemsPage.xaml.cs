@@ -1,5 +1,6 @@
 using GHVRQ_Save_Manager.Data;
 using GHVRQ_Save_Manager.XML;
+using Microsoft.Maui.Controls.Platform;
 using MvvmHelpers;
 using System.Diagnostics;
 
@@ -7,20 +8,17 @@ namespace GHVRQ_Save_Manager.Pages;
 
 public partial class ItemsPage : ContentView
 {
-    private static ItemsPage instance;
-
     static List<GHVRObject> objects = [];
     static List<GHVRObject> filteredObjects = [];
 
-    public ObservableRangeCollection<GHVRObject> ObjectsToDisplay { get; set; }
+    public static ObservableRangeCollection<GHVRObject> ObjectsToDisplay { get; set; }
 
     static event EventHandler OnUpdateObjectsCollection;
 
+
+
     public ItemsPage()
 	{
-        instance = this;
-
-
         ObjectsToDisplay = [];
 		InitializeComponent();
 
@@ -42,13 +40,6 @@ public partial class ItemsPage : ContentView
 
         OnUpdateObjectsCollection?.Invoke(null, new());
     }
-
-    public static void UpdateObject(GHVRObject obj)
-    {
-        GHVRObject oldObj = instance.ObjectsToDisplay.FirstOrDefault(old => old.Object_Id == obj.Object_Id);
-        instance.ObjectsToDisplay[instance.ObjectsToDisplay.IndexOf(oldObj)] = obj;
-    }
-
 
     private void UpdateObjectsToDisplay()
     {
@@ -100,5 +91,10 @@ public partial class ItemsPage : ContentView
     private void IsInHToggle_CheckChanged(object sender, EventArgs e)
     {
         FilterSearchBar(ItemSearchBar.Text, IsInBPToggle.IsChecked, IsInHToggle.IsChecked);
+    }
+
+    private void CreateObjectButton_Clicked(object sender, EventArgs e)
+    {
+        MainPage.ShowAlertDialog("Create Object");
     }
 }
