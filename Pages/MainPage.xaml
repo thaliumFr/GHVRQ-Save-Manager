@@ -35,7 +35,7 @@
                     <material:TabItem.ContentTemplate>
                         <DataTemplate>
                             <VerticalStackLayout>
-                                <Label Text="Player Injury Tab" />
+                                <Label Text="Player Injury Tab isn't available for now" />
                     
                             </VerticalStackLayout>
                         </DataTemplate>
@@ -44,7 +44,7 @@
 
                 <material:TabItem Title="World">
                     <VerticalStackLayout>
-                        <Label Text="World Tab" />
+                        <Label Text="World Tab isn't available for now" />
                     
                     </VerticalStackLayout>
                 </material:TabItem>
@@ -54,7 +54,7 @@
                 </material:TabItem>
             
                 <material:TabItem Title="Notebook">
-                    <Label Text="Notebook Tab" />
+                    <Label Text="Notebook Tab isn't available for now" />
                 </material:TabItem>
             
                 <material:TabItem Title="Map">

@@ -13,4 +13,5 @@ ex: `playerStatus.STATS.health`
 Reffers to the system that makes any UI field (text box, checkbox, etc.) work with the XML file reader.
 
 ## Credits
+- Base game and items enum - GHVR Quest Edition/Incuvo
 - ObservableCollectionRange - Malcolm Smith

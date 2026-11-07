@@ -2,12 +2,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using UraniumUI.Material.Controls;
-using GHVRQ_Save_Manager.Data;
 using System.Diagnostics;
-using System.Numerics;
 
 using CheckBox = UraniumUI.Material.Controls.CheckBox;
-using Microsoft.UI.Xaml.Controls;
+using UraniumUI.Controls;
 
 namespace GHVRQ_Save_Manager.Data
 {
@@ -59,6 +57,28 @@ namespace GHVRQ_Save_Manager.Data
             }
 
             XMLReaderSystem.AddElementLink(new ToggleFieldData() { Field = checkBox }, el);
+        }
+
+        public static void AddToList(Dropdown dropdown, XElement XMLElement)
+        {
+            if (String.IsNullOrEmpty(dropdown.CommandParameter?.ToString()))
+            {
+                Debug.WriteLine("ReturnCommandParameter is null or empty.");
+                return;
+            }
+
+            XElement? el = XMLElement;
+            if (!(bool)dropdown.CommandParameter.ToString()?.Contains(XMLElement.Name.LocalName))
+            {
+                el = XMLElement.Element(dropdown.CommandParameter?.ToString());
+                if (el == null)
+                {
+                    Debug.WriteLine($"Element for {XMLElement.Name}.{dropdown.CommandParameter} not found.");
+                    return;
+                }
+            }
+
+            XMLReaderSystem.AddElementLink(new DropdownFieldData() { Field = dropdown }, el);
         }
 
         public static void AddToList(object sender, XElement XMLElement)
@@ -118,6 +138,24 @@ namespace GHVRQ_Save_Manager.Data
         public readonly override bool Equals([NotNullWhen(true)] object? obj)
         {
             return obj is ToggleFieldData other && Field == other.Field;
+        }
+
+        public readonly override int GetHashCode()
+        {
+            return Field?.GetHashCode() ?? 0;
+        }
+    }
+
+    public struct DropdownFieldData : IUniversalInputFieldData<Dropdown, string>
+    {
+        public Dropdown Field { get; set; }
+        public readonly string Value { get { return Field.SelectedItem?.ToString() ?? string.Empty; } set { Field.SelectedItem = value; } }
+        object IUniversalInputFieldData.Field { get => Field; set => Field = (Dropdown)value; }
+        object IUniversalInputFieldData.Value { get => Value; set => Value = (string)value; }
+
+        public readonly override bool Equals([NotNullWhen(true)] object? obj)
+        {
+            return obj is DropdownFieldData other && Field == other.Field;
         }
 
         public readonly override int GetHashCode()

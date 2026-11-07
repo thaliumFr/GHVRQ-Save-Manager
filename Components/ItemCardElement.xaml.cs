@@ -6,13 +6,16 @@ namespace GHVRQ_Save_Manager.Components;
 
 public partial class ItemCardComponent : ContentView
 {
+    private string[] EItemIDs = Enum.GetNames<EItemID>();
+    private string[] EItemCategories = Enum.GetNames<BackpackObject.Category>();
+
     public ItemCardComponent()
     {
         BindingContext = this;
         InitializeComponent();
 
-        ItemCatDropdown.ItemsSource = Enum.GetNames<BackpackObject.Category>();
-
+        ItemIDDropdown.ItemsSource = EItemIDs;
+        ItemCatDropdown.ItemsSource = EItemCategories;
     }
 
     public static readonly BindableProperty ItemProperty = BindableProperty.Create(
@@ -59,7 +62,6 @@ public partial class ItemCardComponent : ContentView
         if (e.PropertyName == "SelectedItem")
         {
             var selectedCategory = Enum.Parse<BackpackObject.Category>(ItemCatDropdown?.SelectedItem?.ToString());
-            Debug.WriteLine($"Selected Category: {selectedCategory}");
             if (Item.BackpackObject != null)
             {
                 Item.BackpackObject.category = selectedCategory;
@@ -70,7 +72,11 @@ public partial class ItemCardComponent : ContentView
 
     private void ItemIDDropdown_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-
+        if (e.PropertyName == "SelectedItem")
+        {
+            var selectedCategory = Enum.Parse<EItemID>(ItemIDDropdown?.SelectedItem?.ToString());
+            Item.ItemID = selectedCategory;
+        }
     }
 
     private void DeleteButton_Clicked(object sender, EventArgs e)
