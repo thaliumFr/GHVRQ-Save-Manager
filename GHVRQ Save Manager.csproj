@@ -93,6 +93,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Components\DamagableComponent.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\ItemCardElement.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
