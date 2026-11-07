@@ -91,6 +91,10 @@ namespace GHVRQ_Save_Manager.Data
             {
                 AddToList(checkBox, XMLElement);
             }
+            else if (sender is Dropdown dropdown)
+            {
+                AddToList(dropdown, XMLElement);
+            }
             else
             {
                 Debug.WriteLine($"Unsupported sender type: {sender.GetType().Name}");

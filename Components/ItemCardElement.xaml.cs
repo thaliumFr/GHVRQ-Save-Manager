@@ -1,6 +1,8 @@
 using GHVRQ_Save_Manager.Data;
+using GHVRQ_Save_Manager.XML;
 using System.Diagnostics;
 using UraniumUI.Controls;
+using UraniumUI.Material.Controls;
 
 namespace GHVRQ_Save_Manager.Components;
 
@@ -81,6 +83,13 @@ public partial class ItemCardComponent : ContentView
 
     private void DeleteButton_Clicked(object sender, EventArgs e)
     {
+        Item.RemoveAllComponents();
+        Item.RemoveFromBackpack();
+        Item.RemoveFromHolster();
+    }
 
+    private void TextField_Loaded(object sender, EventArgs e)
+    {
+        TextField textField = (TextField)sender;
     }
 }

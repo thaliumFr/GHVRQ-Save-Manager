@@ -8,9 +8,35 @@
              xmlns:models="clr-namespace:GHVRQ_Save_Manager.Data"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui" 
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-             xmlns:validation="clr-namespace:UraniumUI.Validations;assembly=UraniumUI.Validations.DataAnnotations"
+             xmlns:validation="clr-namespace:UraniumUI.Validations;assembly=UraniumUI.Validations.DataAnnotations"    
+             xmlns:selectors="clr-namespace:GHVRQ_Save_Manager.Selectors"
              x:Name="ItemCard"
              x:DataType="models:GHVRObject">
+    
+    <ContentView.Resources>
+        <DataTemplate x:Key="DamagableTemplate" x:DataType="models:DamagableComponent">
+            <components:DamagableCardComponent BindingContext="{Binding}" HorizontalOptions="Start" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="DrinkableTemplate" x:DataType="models:DrinkableComponent">
+            <VerticalStackLayout Padding="12">
+                <Label Text="Drinkable" FontAttributes="Bold" />
+                <Label Text="{Binding COMPONENT_ID}" FontAttributes="Bold" />
+            </VerticalStackLayout>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ConsumableTemplate" x:DataType="models:ConsumableComponent">
+            <components:ConsumableComponent BindingContext="{Binding}" HorizontalOptions="Start"/>
+        </DataTemplate>
+
+        <selectors:ComponentTemplateSelector
+            x:Key="ComponentSelector"
+            DamagableTemplate="{StaticResource DamagableTemplate}"
+            DrinkableTemplate="{StaticResource DrinkableTemplate}"
+            ConsumableTemplate="{StaticResource ConsumableTemplate}" />
+    </ContentView.Resources>
+
+
     <Border Stroke="{DynamicResource Text}" StrokeShape="RoundRectangle 3" Padding="10" HorizontalOptions="Fill" VerticalOptions="Fill" Margin="0,5,25,5">
         <Grid ColumnDefinitions="*, *, 300" RowDefinitions="20, *, 20, *" RowSpacing="20" ColumnSpacing="40" HorizontalOptions="Fill" VerticalOptions="Fill" >
             <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" >Item Data</Label>
@@ -46,11 +72,8 @@
                 <Button x:Name="DeleteButton" Text="Delete Object" IsEnabled="False" BackgroundColor="DarkRed" Margin="0,0,0,10" Clicked="DeleteButton_Clicked"/>
             </VerticalStackLayout>
 
-            <ScrollView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  HorizontalOptions="Fill" VerticalOptions="Fill" MaximumHeightRequest="200">
-                <VerticalStackLayout x:Name="ComponentsStackLayout" HorizontalOptions="Fill" VerticalOptions="Fill">
-                    <Label Text="Components will be displayed here." FontAttributes="Italic"/>
-                </VerticalStackLayout>
-            </ScrollView>
+            <CollectionView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Start" FlowDirection="LeftToRight" ItemsUpdatingScrollMode="KeepScrollOffset" SelectionMode="None" CanReorderItems="False" ItemsSource="{Binding Components}" ItemTemplate="{StaticResource ComponentSelector}" >
+            </CollectionView>
 
         </Grid>
     </Border>

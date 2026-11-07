@@ -73,7 +73,8 @@ namespace GHVRQ_Save_Manager.Data
 
         public bool IsInHolster { get => holsterObject != null; }
 
-
+        private List<IObjectComponent> components = [];
+        public List<IObjectComponent> Components { get => components; set => SetProperty(ref components, value); }
 
         public void RemoveFromBackpack()
         {
@@ -106,7 +107,51 @@ namespace GHVRQ_Save_Manager.Data
                 XMLElement = backpackElement
             };
 
-            this.BackpackObject = backpackObject;
+            BackpackObject = backpackObject;
+        }
+
+        public void RemoveFromHolster()
+        {
+            XElement? xElement = HolsterObject?.XMLElement;
+            XMLReaderSystem.GetCategoryElement(XMLReaderSystem.Category.Items)?.Element("HOLSTER_OBJECTS_LIST")?.Elements("HOLSTER_OBJECT").Where(x => x == xElement).Remove();
+            HolsterObject = null;
+        }
+
+        public void AddToHolster(HolsterObject.SlotType slot)
+        {
+            XElement holsterElement = new("HOLSTER_OBJECT",
+                    new XElement("SLOT", slot.ToString()),
+                    new XElement("OBJECT_ID", this.Object_Id)
+            );
+            XMLReaderSystem.GetCategoryElement(XMLReaderSystem.Category.Items)?.Element("HOLSTER_OBJECTS_LIST")?.Add(holsterElement);
+            Debug.WriteLine($"Added {this.Object_Id} to holster at slot {slot}");
+            HolsterObject holsterObject = new()
+            {
+                slot = slot,
+                Object_Id = this.Object_Id,
+                XMLElement = holsterElement
+            };
+            HolsterObject = holsterObject;
+        }
+
+        public void RemoveComponent(IObjectComponent component)
+        {
+            XElement? xElement = component.XMLElement;
+            XMLElement?.Elements("COMPONENTS")?.Elements("COMPONENT")?.Where(x => x == xElement).Remove();
+            Components.Remove(component);
+        }
+
+        public void AddComponent(IObjectComponent component)
+        {
+            XElement componentElement = component.XMLElement;
+            XMLElement?.Element("COMPONENTS")?.Add(componentElement);
+            Components.Add(component);
+        }
+
+        public void RemoveAllComponents()
+        {
+            XMLElement?.Element("COMPONENTS")?.Elements("COMPONENT")?.Remove();
+            Components.Clear();
         }
     }
 
@@ -138,10 +183,5 @@ namespace GHVRQ_Save_Manager.Data
         public SlotType slot { get; set; }
         public string Object_Id { get; set; }
         public XElement? XMLElement { get; set; }
-    }
-
-    public struct Components
-    {
-
     }
 }

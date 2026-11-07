@@ -2,10 +2,10 @@
 using GHVRQ_Save_Manager.Pages;
 using GHVRQ_Save_Manager.Systems;
 using GHVRQ_Save_Manager.XML;
-using MvvmHelpers;
 using System.Diagnostics;
 using System.Xml.Linq;
 using UraniumUI.Material.Controls;
+using UraniumUI.Controls;
 using UraniumUI.Pages;
 using CheckBox = UraniumUI.Material.Controls.CheckBox;
 
@@ -201,6 +201,14 @@ namespace GHVRQ_Save_Manager
             else if (field is TextField textField)
             {
                 IUniversalInputFieldData.AddToList(sender, textField.ReturnCommandParameter?.ToString());
+            }
+            else if (field is Dropdown dropdown)
+            {
+                IUniversalInputFieldData.AddToList(sender, dropdown.CommandParameter?.ToString());
+            }
+            else
+            {
+                Debug.WriteLine($"Unknown field type: {field.GetType()}");
             }
         }
 

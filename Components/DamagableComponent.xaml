@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GHVRQ_Save_Manager.Components.DamagableComponent"             
+             x:Class="GHVRQ_Save_Manager.Components.DamagableCardComponent"             
              xmlns:models="clr-namespace:GHVRQ_Save_Manager.Data"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui" 
-             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material">
-    <VerticalStackLayout>
-        <Label 
-            Text="Damagable" FontAttributes="Bold" TextTransform="Uppercase"  />
-        <material:TextField x:Name="HealthTextField" Title="Health" Text="{Binding Health}" Keyboard="Numeric" TextChanged="HealthTextField_TextChanged"/>
-    </VerticalStackLayout>
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             x:DataType="models:DamagableComponent">
+    <Border Stroke="{DynamicResource Text}" StrokeShape="RoundRectangle 3" Padding="10" HorizontalOptions="Start">
+        <uranium:ExpanderView IsExpanded="False" HorizontalOptions="Start">
+            <uranium:ExpanderView.Header>
+                <Label Text="Damagable" FontAttributes="Bold" />
+            </uranium:ExpanderView.Header>
+            <VerticalStackLayout HorizontalOptions="Start">
+                <material:TextField x:Name="HealthTextField" Title="Health" Text="{Binding HEALTH}" ReturnCommandParameter="HEALTH" Keyboard="Numeric" Loaded="TextField_Loaded" BorderColor="Transparent" BorderThickness="0"/>
+            </VerticalStackLayout>
+        </uranium:ExpanderView>
+    </Border>
 </ContentView>

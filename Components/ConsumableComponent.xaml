@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GHVRQ_Save_Manager.Components.ConsumableComponent"
+             xmlns:models="clr-namespace:GHVRQ_Save_Manager.Data"
+             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui" 
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             x:DataType="models:ConsumableComponent">
+    <Border Stroke="{DynamicResource Text}" StrokeShape="RoundRectangle 3" Padding="10" HorizontalOptions="Start">
+        <uranium:ExpanderView IsExpanded="False" HorizontalOptions="Start">
+            <uranium:ExpanderView.Header>
+                <Label Text="Consumable" FontAttributes="Bold" />
+            </uranium:ExpanderView.Header>
+            <VerticalStackLayout HorizontalOptions="Start">
+                <uranium:Dropdown x:Name="StateDropdown" SelectedItem="{Binding STATE}" CommandParameter="STATE" Loaded="StateDropdown_Loaded"/>
+                <material:TextField x:Name="DryTextField" Title="Dry Progress" Text="{Binding PROGRESS_DRY}" ReturnCommandParameter="PROGRESS_DRY" Keyboard="Numeric" Loaded="TextField_Loaded" BorderColor="Transparent" BorderThickness="0"/>
+                <material:TextField x:Name="RoastTextField" Title="Roast Progress" Text="{Binding PROGRESS_ROAST}" ReturnCommandParameter="PROGRESS_ROAST" Keyboard="Numeric" Loaded="TextField_Loaded" BorderColor="Transparent" BorderThickness="0"/>
+                <material:TextField x:Name="SmokeTextField" Title="Smoke Progress" Text="{Binding PROGRESS_SMOKE}" ReturnCommandParameter="PROGRESS_SMOKE" Keyboard="Numeric" Loaded="TextField_Loaded" BorderColor="Transparent" BorderThickness="0"/>
+                <material:TextField x:Name="SpoilTextField" Title="Spoil Progress" Text="{Binding PROGRESS_SPOIL}" ReturnCommandParameter="PROGRESS_SPOIL" Keyboard="Numeric" Loaded="TextField_Loaded" BorderColor="Transparent" BorderThickness="0"/>
+            </VerticalStackLayout>
+        </uranium:ExpanderView>
+    </Border>
+</ContentView>

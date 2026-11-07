@@ -134,6 +134,60 @@ namespace GHVRQ_Save_Manager.XML
             return objects;
         }
 
+        static List<IObjectComponent> GetAllComponents()
+        {
+            List<IObjectComponent> components = [];
+            XElement? consumables = GetCategoryElement(Category.Items)?.Element("CONSUMABLES_LIST");
+            XElement? drinkables = GetCategoryElement(Category.Items)?.Element("DRINKABLES_LIST");
+            XElement? damagables = GetCategoryElement(Category.Items)?.Element("DAMAGABLES_LIST");
+
+            foreach (var consumable in consumables?.Elements("CONSUMABLE"))
+            {
+                components.Add(new ConsumableComponent()
+                {
+                    COMPONENT_ID = consumable.Element("COMPONENT_ID")?.Value ?? "",
+                    OBJECT_ID = consumable.Element("OBJECT_ID")?.Value ?? "",
+                    XMLElement = consumable,
+                    STATE = Enum.TryParse(consumable.Element("STATE")?.Value, out ConsumableComponent.ConsumableState state) ? state : ConsumableComponent.ConsumableState.RAW,
+                    PROGRESS_ROAST = float.TryParse(consumable.Element("PROGRESS_ROAST")?.Value, out float roast) ? roast : 0,
+                    PROGRESS_SMOKE = float.TryParse(consumable.Element("PROGRESS_SMOKE")?.Value, out float smoke) ? smoke : 0,
+                    PROGRESS_DRY = float.TryParse(consumable.Element("PROGRESS_DRY")?.Value, out float dry) ? dry : 0,
+                    PROGRESS_SPOIL = float.TryParse(consumable.Element("PROGRESS_SPOIL")?.Value, out float spoil) ? spoil : 0
+                });
+            }
+            foreach (var drinkable in drinkables?.Elements("DRINKABLE"))
+            {
+                List<Liquid> mixture = [];
+                foreach (var liquid in drinkable.Element("MIXTURE")?.Elements("LIQUID"))
+                {
+                    mixture.Add(new Liquid()
+                    {
+                        liquidID = Enum.TryParse(liquid.Element("LIQUID_ID")?.Value, out ELiquids liquidID) ? liquidID : ELiquids.CLEAN_WATER,
+                        concentration = float.TryParse(liquid.Element("CONCENTRATION")?.Value, out float concentration) ? concentration : 0,
+                        amount = float.TryParse(liquid.Element("AMOUNT")?.Value, out float amount) ? amount : 0
+                    });
+                }
+                components.Add(new DrinkableComponent()
+                {
+                    COMPONENT_ID = drinkable.Element("COMPONENT_ID")?.Value ?? "",
+                    OBJECT_ID = drinkable.Element("OBJECT_ID")?.Value ?? "",
+                    XMLElement = drinkable,
+                    MIXTURE = mixture
+                });
+            }
+            foreach (var damagable in damagables?.Elements("DAMAGABLE"))
+            {
+                components.Add(new DamagableComponent()
+                {
+                    COMPONENT_ID = damagable.Element("COMPONENT_ID")?.Value ?? "",
+                    OBJECT_ID = damagable.Element("OBJECT_ID")?.Value ?? "",
+                    XMLElement = damagable,
+                    HEALTH = int.TryParse(damagable.Element("HEALTH")?.Value, out int health) ? health : 0
+                });
+            }
+            return components;
+        }
+
         static List<HolsterObject> GetAllObjectsInHolsters()
         {
             List<HolsterObject> objects = [];
@@ -164,6 +218,7 @@ namespace GHVRQ_Save_Manager.XML
 
             List<BackpackObject> backpackObjects = GetAllObjectsInBackpack();
             List<HolsterObject> holsterObjects = GetAllObjectsInHolsters();
+            List<IObjectComponent> components = GetAllComponents();
 
             foreach (XElement itemElement in itemsElement.Elements("OBJECT"))
             {
@@ -191,6 +246,8 @@ namespace GHVRQ_Save_Manager.XML
 
                 BackpackObject? backpackObj = backpackObjects.Find(BObj => BObj.Object_Id == obj.Object_Id);
                 HolsterObject? holsterObj = holsterObjects.Find(HObj => HObj.Object_Id == obj.Object_Id);
+                List<IObjectComponent>? componentsObj = components.FindAll(C => C.OBJECT_ID == obj.Object_Id);
+
                 if (backpackObj != null)
                 {
                     obj.BackpackObject = backpackObj;
@@ -198,6 +255,10 @@ namespace GHVRQ_Save_Manager.XML
                 if (holsterObj != null)
                 {
                     obj.HolsterObject = holsterObj;
+                }
+                if (componentsObj != null)
+                {
+                    obj.Components = componentsObj;
                 }
 
                 objects.Add(obj);

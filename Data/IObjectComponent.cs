@@ -46,7 +46,7 @@ namespace GHVRQ_Save_Manager.Data
         public float amount { get; set; }
     }
 
-    struct DamagableComponent : IObjectComponent
+    public struct DamagableComponent : IObjectComponent
     {
         public string OBJECT_ID { get; set; }
         public string COMPONENT_ID { get; set; }
